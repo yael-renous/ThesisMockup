@@ -4,6 +4,9 @@ using System.Collections;
 
 public class AudioDetection : MonoBehaviour
 {
+
+    //TODO- send the correct audio - check audioclip.create to create a copy of the "recording"
+    // use the clip position to send the correct audio (like in loudness check)
     public static AudioDetection Instance { get; private set; }
     public RecordAudio recordAudio;
     public int sampleWindow = 64;
@@ -11,6 +14,7 @@ public class AudioDetection : MonoBehaviour
 
     public float minThreshold = 0.01f;
     public float maxThreshold = 1.0f;
+    public int recordingTime = 3455; //TODO- always creates 5 second clip even if user is speaking for less or more
 
     private bool isSpeaking = false;
     private string micName;
@@ -84,7 +88,7 @@ public class AudioDetection : MonoBehaviour
         }
 
         micName = Microphone.devices[0];
-        microphoneClip = Microphone.Start(micName, false, 20, AudioSettings.outputSampleRate);
+        microphoneClip = Microphone.Start(micName, false, recordingTime, AudioSettings.outputSampleRate); //TODO- always creates 5 second clip even if user is speaking for less or more
         Debug.Log("New audio clip started-- " + micName);
 
         // Wait for the microphone to start recording
@@ -104,8 +108,8 @@ public class AudioDetection : MonoBehaviour
         {
             Microphone.End(null);
         }
-        int sampleRate = 44100;
-        microphoneClip = Microphone.Start(micName, true, 20, AudioSettings.outputSampleRate);
+        // int sampleRate = 44100;
+        microphoneClip = Microphone.Start(micName, true, recordingTime, AudioSettings.outputSampleRate);
         Debug.Log("Microphone started-- " + micName);
     }
 

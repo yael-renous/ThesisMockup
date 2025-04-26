@@ -5,7 +5,7 @@ public class SceneManager : MonoBehaviour
     public static SceneManager Instance { get; private set; }
     public RoomEffect[] roomEffects;
 
-    public int currentRoomIndex = 0;
+    public int currentRoomIndex = 1;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Awake()

@@ -98,7 +98,9 @@ public class RaycastEcho : RoomEffect
                 if (roomObject != null)
                 {
                     // Debug.Log("Laser hit an object with RoomObjectController");
-                    roomObject.play(audioClip);
+                    // roomObject.play(audioClip);
+                    roomObject.play(debugAudioClip);
+
                     // Perform any additional actions with roomObject if needed
                 }
 
