@@ -52,15 +52,18 @@ public class AudioDetection : MonoBehaviour
             isSpeaking = true;
             Debug.Log("speaking");
             Microphone.End(micName);
-           recordAudio.StartRecording();
-           Invoke("StopRecording", 20f);
+            CaptureAudioClip();
+        //    recordAudio.StartRecording();
+        //    Invoke("StopRecording", 20f);
         }
-        // else if(isSpeaking)
-        // {
-        //     Debug.Log("not speaking");
-        //     MicRecorder.Instance.StopRecording();
-        //     isSpeaking = false;
-        // }
+        else if(isSpeaking)
+        {
+            Debug.Log("not speaking");
+            StopAudio();
+            // StopRecording();
+            // MicRecorder.Instance.StopRecording();
+            isSpeaking = false;
+        }
     }
 
     private void StopRecording()
@@ -75,9 +78,9 @@ public class AudioDetection : MonoBehaviour
 
     private void CaptureAudioClip()
     {
-        if (Microphone.IsRecording(micName))
+        if (Microphone.IsRecording(null))
         {
-            Microphone.End(micName);
+            Microphone.End(null);
         }
 
         micName = Microphone.devices[0];
@@ -97,9 +100,9 @@ public class AudioDetection : MonoBehaviour
     public void SetupMicrophone()
     {
         // micName = Microphone.devices[0];
-        if (Microphone.IsRecording(micName))
+        if (Microphone.IsRecording(null))
         {
-            Microphone.End(micName);
+            Microphone.End(null);
         }
         int sampleRate = 44100;
         microphoneClip = Microphone.Start(micName, true, 20, AudioSettings.outputSampleRate);

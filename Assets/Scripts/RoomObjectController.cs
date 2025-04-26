@@ -12,6 +12,7 @@ public class RoomObjectController : MonoBehaviour
         audioSource = GetComponent<AudioSource>();
         // audioDetection.OnStartSpeaking += OnStartSpeaking;
         audioSource.loop = false;
+        audioSource.spatialBlend = 1.0f;
         
         
     }
