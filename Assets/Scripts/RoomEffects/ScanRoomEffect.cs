@@ -5,6 +5,7 @@ public class ScanRoomEffect : RoomEffect
     public Material highPitchMaterial;
     public Material mediumPitchMaterial;
     public Material lowPitchMaterial;
+    private Material[] materials;
     public Transform[] originTransforms;
 
     public GameObject breadthScannerPrefab;
@@ -18,11 +19,13 @@ public class ScanRoomEffect : RoomEffect
     public bool breadthScannerEnabled = false;
 
     private float scannerDuration = 3f;
+    public bool playDebug = false;
 
   private Keyboard keyboard;
 
   void Start()
     {
+        materials = new Material[]{highPitchMaterial, mediumPitchMaterial, lowPitchMaterial};
         keyboard = Keyboard.current;
     }
 
@@ -30,14 +33,23 @@ public class ScanRoomEffect : RoomEffect
     {
         if (keyboard.hKey.wasPressedThisFrame)
         {
-           ActivateRoomScan(highPitchMaterial);
+           ActivateRoomScan(highPitchMaterial, originTransforms[0]);
         }
         if (keyboard.lKey.wasPressedThisFrame)
         {
-            ActivateRoomScan(mediumPitchMaterial);
+            ActivateRoomScan(mediumPitchMaterial, originTransforms[0]);
         }
         if(keyboard.mKey.wasPressedThisFrame){
-            ActivateRoomScan(lowPitchMaterial);
+            ActivateRoomScan(lowPitchMaterial, originTransforms[0]);
+        }
+
+        if(playDebug&&keyboard.enterKey.wasPressedThisFrame){
+
+            //random origin transform
+            int randomIndex = Random.Range(0, originTransforms.Length);
+            //random material
+            int randomMaterialIndex = Random.Range(0, materials.Length);
+            ActivateRoomScan(materials[randomMaterialIndex], originTransforms[randomIndex]);
         }
     }
 
@@ -59,23 +71,22 @@ public class ScanRoomEffect : RoomEffect
         // Debug.Log(pitch);
     }
 
-    private void ActivateRoomScan(Material material){
+    private void ActivateRoomScan(Material material, Transform originTransform){
         if(breadthScannerEnabled){
-            ActivateBreadthScanner(material);
+            ActivateBreadthScanner(material, originTransform);
         }
         else{
-            ActivateDepthScanner();
+            ActivateDepthScanner(originTransform);
         }
     }
-    private void ActivateDepthScanner(){
-        GameObject depthScanner = Instantiate(depthScannerPrefab, Vector3.zero, Quaternion.identity, parent:originTransforms[0]);
+    private void ActivateDepthScanner(Transform originTransform){
+        GameObject depthScanner = Instantiate(depthScannerPrefab, Vector3.zero, Quaternion.identity, parent:originTransform);
 
         depthScanner.GetComponent<ParticleSystem>().Play();
         // Destroy(depthScanner, scannerDuration);
     }
-    private void ActivateBreadthScanner(Material material)
-    {
-        GameObject breadthScanner = Instantiate(breadthScannerPrefab, originTransforms[0].position, Quaternion.identity);
+    private void ActivateBreadthScanner(Material material, Transform originTransform){
+        GameObject breadthScanner = Instantiate(breadthScannerPrefab, originTransform.position, Quaternion.identity);
         ParticleSystem particleSystem = breadthScanner.GetComponent<ParticleSystem>();
         ParticleSystemRenderer particleRenderer = breadthScanner.GetComponent<ParticleSystemRenderer>();
         particleRenderer.material = material;

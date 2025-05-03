@@ -7,6 +7,7 @@ public class RaycastEcho : RoomEffect
     public int maxBounces = 200;
     public float maxDistance = 1000f;
     public Transform[] raycastOrigins; // Array of origin sources
+    // public RoomObjectController[] roomObjects;
     private Keyboard keyboard;
     public float lineWidth = 0.1f;
     public float animationSpeed = 1f; // Speed of the animation
@@ -19,7 +20,10 @@ public class RaycastEcho : RoomEffect
     public float lineLifetime = 5f; // Duration in seconds before the line disappears
     public bool showFullLine = true; // Option to show full line or just running segment
     public int numLasers = 10; // Number of lasers to emit
+    public AudioClip[] audioClips;
+    public Material colorObjectMaterial;
 
+    public bool isDebug = true;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -28,21 +32,19 @@ public class RaycastEcho : RoomEffect
 
     void Update()
     {
-        // if (keyboard.enterKey.wasPressedThisFrame)
-        // {
-        //     for (int i = 0; i < raycastOrigins.Length; i++)
-        //     {
-        //         AnimateRaysInSphere(raycastOrigins[i], i);
-        //     }
-        // }
+        if (isDebug && keyboard.enterKey.wasPressedThisFrame)
+        {
+            int randomIndex = Random.Range(0, raycastOrigins.Length);
+            AnimateRaysInSphere(raycastOrigins[randomIndex], randomIndex,audioClips[randomIndex]);
+        }
     }
 
     public override void Activate(AudioClip audioClip)
     {
-          for (int i = 0; i < raycastOrigins.Length; i++)
-            {
-                AnimateRaysInSphere(raycastOrigins[i], i, audioClip);
-            }
+         
+                 int randomIndex = Random.Range(0, raycastOrigins.Length);
+                AnimateRaysInSphere(raycastOrigins[randomIndex], randomIndex,debugAudioClip);
+        
     }
 
     void AnimateRaysInSphere(Transform originTransform, int index, AudioClip audioClip)
@@ -72,6 +74,9 @@ public class RaycastEcho : RoomEffect
         GameObject lineObject = new GameObject("LineRenderer");
         lineObject.transform.parent = this.transform;
 
+        // Set the layer of the lineObject to "projection"
+        lineObject.layer = LayerMask.NameToLayer("projection");
+
         // Add a LineRenderer component
         LineRenderer lr = lineObject.AddComponent<LineRenderer>();
         lr.startWidth = lineWidth;
@@ -84,6 +89,7 @@ public class RaycastEcho : RoomEffect
 
         Vector3 initialOrigin = originTransform.position;
         Vector3 origin = initialOrigin + new Vector3(offsetX, offsetY, offsetZ);
+        origin = new Vector3(origin.x, 0.1f, origin.z);
         float totalDistance = 0f;
 
         lr.positionCount = 1;
@@ -95,14 +101,7 @@ public class RaycastEcho : RoomEffect
             {
                 // Check if the hit object has a RoomObjectController component
                 RoomObjectController roomObject = hit.collider.GetComponent<RoomObjectController>();
-                if (roomObject != null)
-                {
-                    // Debug.Log("Laser hit an object with RoomObjectController");
-                    // roomObject.play(audioClip);
-                    roomObject.play(debugAudioClip);
-
-                    // Perform any additional actions with roomObject if needed
-                }
+           
 
                 Vector3 hitPoint = hit.point;
                 float segmentDistance = Vector3.Distance(origin, hitPoint);
@@ -111,8 +110,19 @@ public class RaycastEcho : RoomEffect
                 // Animate the segment
                 yield return StartCoroutine(AnimateSegment(origin, hitPoint, segmentTime * animationSpeed, lr));
 
+                // Show the colored object after the segment animation is complete
+                if (roomObject != null)
+                {
+                    colorObjectMaterial.SetColor("_EmissionColor", uniqueColor);
+                    roomObject.showColoredObject();
+                    roomObject.play(debugAudioClip);
+                }
+
                 totalDistance += segmentDistance;
                 direction = Vector3.Reflect(direction, hit.normal);
+                direction.y = 0; // Ensure the direction stays on the xz-plane
+                direction.Normalize(); // Normalize the direction vector
+
                 origin = hitPoint;
             }
             else

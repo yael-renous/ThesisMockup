@@ -7,6 +7,8 @@ public class SceneManager : MonoBehaviour
 
     public int currentRoomIndex = 1;
 
+    public AudioClip debugAudioClip;
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Awake()
     {

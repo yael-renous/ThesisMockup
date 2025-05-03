@@ -5,6 +5,7 @@ public class RoomObjectController : MonoBehaviour
    private AudioSource audioSource;
 
    private AudioClip audioClipToPlay = null;
+   public GameObject ColoredObject;
 
    private float audioStartTime = 0f; // To track when the audio started playing
    public float minPlayTimeInSeconds = 0.5f;
@@ -15,6 +16,7 @@ public class RoomObjectController : MonoBehaviour
        audioSource = gameObject.AddComponent<AudioSource>();
        audioSource.loop = false;
        audioSource.spatialBlend = 1.0f;
+       ColoredObject.SetActive(false);
    }
 
 
@@ -22,6 +24,37 @@ public class RoomObjectController : MonoBehaviour
    void Update()
    {
        
+   }
+
+   public void showColoredObject(){
+    if(ColoredObject != null){
+        ColoredObject.SetActive(true);
+        Invoke("hideColoredObject", 0.3f);
+    }
+   }
+
+   public void hideColoredObject(){
+    ColoredObject.SetActive(false);
+   }
+   public void setMaterial(Material material){
+    Debug.Log("Setting material to " + material.name);
+    //set all childer with material component to this material
+    foreach (Transform child in transform)
+    {
+        if (child.GetComponent<MeshRenderer>() != null)
+        {
+            child.GetComponent<MeshRenderer>().material = material;
+        }
+    }
+   }
+
+   void OnParticleCollision(GameObject other)
+   {
+   
+        audioClipToPlay = SceneManager.Instance.debugAudioClip;
+ 
+        play(audioClipToPlay);
+       Debug.Log("Particle collision detected");
    }
 
    public void play(AudioClip audioClip)
