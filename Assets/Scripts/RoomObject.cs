@@ -58,11 +58,11 @@ public class RoomObject : MonoBehaviour
        }
 
        Debug.Log("Playing audio " + audioClip.length + " seconds");
-       audioClipToPlay = audioClip;
-       audioSource.clip = audioClipToPlay;
-       audioSource.Play();
-       audioStartTime = Time.time; // Record the start time
-       Invoke("StopAudio", audioClipToPlay.length);
+    //    audioClipToPlay = audioClip;
+    //    audioSource.clip = audioClipToPlay;
+       audioSource.PlayOneShot(audioClip);
+    //    audioStartTime = Time.time; // Record the start time
+    //    Invoke("StopAudio", 2.1f);
    }
 
    private void StopAudio()
@@ -70,6 +70,7 @@ public class RoomObject : MonoBehaviour
        if (audioSource.isPlaying)
        {
            Debug.Log("Audio finished playing");
+           // hideColoredObject();
            audioSource.Stop();
            audioSource.clip = null;
        }

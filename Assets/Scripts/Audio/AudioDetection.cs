@@ -16,6 +16,7 @@ public class AudioDetection : MonoBehaviour
     public float silenceDurationToStop = 1.0f; // Duration (seconds) of silence to consider as stop speaking
     public float minThreshold = 0.01f; // Loudness threshold to detect speaking
     public int sampleWindow = 64; // Number of samples to check for loudness
+    public float segmentDurationSeconds = 2.0f; // Duration of each speech segment in seconds
 
     // === Internal State ===
     private AudioClip microphoneClip;
@@ -27,7 +28,13 @@ public class AudioDetection : MonoBehaviour
     private int speakEndPosition = -1;
     private float speakStartTime = 0f;
     private float speakEndTime = 0f;
+    private float segmentTimer = 0f;
+    private int lastSegmentEndPosition = 0;
     public Action<AudioClip> OnStartSpeaking;
+    private bool isSpeechTimerActive = false;
+    private int speechStartSample = -1;
+    private bool isRecordingSegment = false;
+    private int segmentStartSample = -1;
 
     // public float loudnessSensitivity = 100f;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -49,6 +56,8 @@ public class AudioDetection : MonoBehaviour
         micName = Microphone.devices[0];
         sampleRate = AudioSettings.outputSampleRate;
         SetupMicrophone();
+        segmentTimer = 0f;
+        lastSegmentEndPosition = 0;
     }
 
     // Update is called once per frame
@@ -71,48 +80,35 @@ public class AudioDetection : MonoBehaviour
     {
         int micPosition = Microphone.GetPosition(micName);
         float loudness = GetLoudnessFromAudioClip(micPosition, microphoneClip);
-        float currentTime = Time.time;
+            // Debug.Log("loudness: " + loudness);
 
-        if (loudness > minThreshold)
+        if (!isRecordingSegment && loudness > minThreshold)
         {
-            if (!isSpeaking)
-            {
-                // Start of speaking
-                isSpeaking = true;
-                speakStartPosition = micPosition;
-                speakStartTime = currentTime;
-                Debug.Log("Started speaking at position: ");
-            }
-            speakEndPosition = micPosition;
-            speakEndTime = currentTime;
-            lastLoudTime = currentTime;
+            // Start recording a 2-second segment
+            isRecordingSegment = true;
+            segmentTimer = 0f;
+            segmentStartSample = micPosition;
         }
-        else
+   
+        if (isRecordingSegment)
         {
-            if (isSpeaking && (currentTime - lastLoudTime) > silenceDurationToStop)
+            segmentTimer += Time.deltaTime;
+            if (segmentTimer >= segmentDurationSeconds)
             {
-                // End of speaking
-                isSpeaking = false;
-                Debug.Log("Stopped speaking at position: ");
-                ExtractAndSendSpeechSegment();
-                speakStartPosition = -1;
-                speakEndPosition = -1;
+                int segmentEndSample = Microphone.GetPosition(micName);
+                ExtractAndSendSpeechSegment(segmentStartSample, segmentEndSample);
+                isRecordingSegment = false;
+                segmentTimer = 0f;
+                segmentStartSample = -1;
             }
         }
     }
 
-    private void ExtractAndSendSpeechSegment()
+    private void ExtractAndSendSpeechSegment(int startSample, int endSample)
     {
-        if (speakStartPosition < 0 || speakEndPosition < 0)
-            return;
-
         int totalSamples = microphoneClip.samples;
         int channels = microphoneClip.channels;
         int segmentLength;
-        int startSample = speakStartPosition;
-        int endSample = speakEndPosition;
-
-        // Handle wrap-around in the circular buffer
         if (endSample < startSample)
         {
             segmentLength = (totalSamples - startSample) + endSample;
@@ -126,7 +122,6 @@ public class AudioDetection : MonoBehaviour
         float[] segmentData = new float[segmentLength * channels];
         if (endSample < startSample)
         {
-            // Copy from start to end of buffer, then from 0 to endSample
             float[] temp1 = new float[(totalSamples - startSample) * channels];
             float[] temp2 = new float[endSample * channels];
             microphoneClip.GetData(temp1, startSample);
@@ -139,13 +134,10 @@ public class AudioDetection : MonoBehaviour
             microphoneClip.GetData(segmentData, startSample);
         }
 
-        // Create a new AudioClip for the segment
         AudioClip segmentClip = AudioClip.Create("SpeechSegment", segmentLength, channels, sampleRate, false);
         segmentClip.SetData(segmentData, 0);
         OnStartSpeaking?.Invoke(segmentClip);
-        // Debug.Log($"Speech segment captured: {segmentLength / (float)sampleRate} seconds");
     }
-
 
     public float GetLoudnessFromAudioClip(int clipPosition, AudioClip clip)
     {
