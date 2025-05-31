@@ -22,11 +22,7 @@ public class ScanRoomEffect : RoomEffect
     void Update()
     {
       
-        if(playDebug&&keyboard.enterKey.wasPressedThisFrame){
-            //random material
-            int randomMaterialIndex = Random.Range(0, materials.Length);
-            ActivateRoomScan(materials[randomMaterialIndex], SceneManager.Instance.projectionTransform);
-        }
+
     }
 
     public override void Activate(AudioClip audioClip)

@@ -35,6 +35,7 @@ public class AudioDetection : MonoBehaviour
     private int speechStartSample = -1;
     private bool isRecordingSegment = false;
     private int segmentStartSample = -1;
+    public float SoundStartTime { get; private set; } = -1f;
 
     // public float loudnessSensitivity = 100f;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -136,6 +137,7 @@ public class AudioDetection : MonoBehaviour
 
         AudioClip segmentClip = AudioClip.Create("SpeechSegment", segmentLength, channels, sampleRate, false);
         segmentClip.SetData(segmentData, 0);
+        SoundStartTime = Time.time;
         OnStartSpeaking?.Invoke(segmentClip);
     }
 

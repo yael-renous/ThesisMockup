@@ -8,17 +8,25 @@ public class RoomObject : MonoBehaviour
 
    private float audioStartTime = 0f; // To track when the audio started playing
    public float minPlayTimeInSeconds = 0.5f;
+   private AudioLowPassFilter lowPass;
+
    // Awake is called when the script instance is being loaded
    void Awake()
    {
-       // Create a new AudioSource component
+       // Create a new AudioSource component if needed
        if(audioSource == null){
             audioSource = gameObject.AddComponent<AudioSource>();
        }
-            audioSource.loop = false;
-        
-           ColoredObject.SetActive(false);
-       
+       audioSource.loop = false;
+
+       // Add or get the AudioLowPassFilter
+       lowPass = GetComponent<AudioLowPassFilter>();
+       if (lowPass == null)
+           lowPass = gameObject.AddComponent<AudioLowPassFilter>();
+       // Set default cutoff to max (no muffling)
+       lowPass.cutoffFrequency = 22000f;
+
+       ColoredObject.SetActive(false);
    }
 
 
@@ -45,24 +53,31 @@ public class RoomObject : MonoBehaviour
 
    public void play(AudioClip audioClip)
    {
-       if (audioSource.isPlaying)
-       {
-           float elapsedTime = Time.time - audioStartTime;
-           if (elapsedTime < minPlayTimeInSeconds)
-           {
-               Debug.Log("Audio has not played for the minimum required time.");
-               return; // Exit the method if the audio hasn't played long enough
-           }
-           // Stop the current audio if it has played long enough
-           audioSource.Stop();
-       }
+       float timeSinceDetection = Time.time - AudioDetection.Instance.SoundStartTime;
+       float volume = CalculateEchoVolume(timeSinceDetection);
+       float cutoff = CalculateEchoCutoff(timeSinceDetection);
 
-       Debug.Log("Playing audio " + audioClip.length + " seconds");
-    //    audioClipToPlay = audioClip;
-    //    audioSource.clip = audioClipToPlay;
+       audioSource.volume = Mathf.Clamp01(volume);
+
+       // Just set the cutoff, filter is always present
+       lowPass.cutoffFrequency = cutoff;
+
+    //    Debug.Log($"Playing audio {audioClip.length} seconds at volume {volume}, cutoff {cutoff}");
        audioSource.PlayOneShot(audioClip);
-    //    audioStartTime = Time.time; // Record the start time
-    //    Invoke("StopAudio", 2.1f);
+   }
+
+   private float CalculateEchoVolume(float timeSinceDetection)
+   {
+       // Higher = faster fade
+       return Mathf.Exp(-timeSinceDetection * SceneManager.Instance.volumeDecayRate);
+   }
+
+   private float CalculateEchoCutoff(float timeSinceDetection)
+   {
+       float minCutoff = 500f;
+       float maxCutoff = 22000f;
+       // Higher = faster muffling
+       return Mathf.Lerp(maxCutoff, minCutoff, Mathf.Clamp01(timeSinceDetection * SceneManager.Instance.cutoffDecayRate));
    }
 
    private void StopAudio()
