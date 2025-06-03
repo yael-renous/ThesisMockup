@@ -60,7 +60,7 @@ public class ScanRoomEffectDemo : RoomEffect
     }
 
     private AudioSource debugAudioSource;
-    public override void Activate(AudioClip audioClip)
+    public override void Activate(int audioId)
     {
         // Debug.Log("ScanRoomEffect activated");
         // //check audio clip pitch

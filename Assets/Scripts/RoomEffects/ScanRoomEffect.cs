@@ -25,17 +25,21 @@ public class ScanRoomEffect : RoomEffect
 
     }
 
-    public override void Activate(AudioClip audioClip)
+    public override void Activate(int audioId)
     {
-      ActivateRoomScan(highPitchMaterial, SceneManager.Instance.projectionTransform);
+      ActivateRoomScan(highPitchMaterial, SceneManager.Instance.projectionTransform, audioId);
     }
 
-    private void ActivateRoomScan(Material material, Transform originTransform){
+    private void ActivateRoomScan(Material material, Transform originTransform, int audioId){
         GameObject scanner = Instantiate(scannerPrefab, originTransform.position, Quaternion.identity);
+        scanner.name = audioId.ToString();
+        // ScannerController scannerController = scanner.GetComponent<ScannerController>();
+        // scannerController.SetAudioClipId(audioId);
         ParticleSystem particleSystem = scanner.GetComponent<ParticleSystem>();
         ParticleSystemRenderer particleRenderer = scanner.GetComponent<ParticleSystemRenderer>();
         particleRenderer.material = material;
         particleSystem.Play();
+        
         Destroy(scanner, scannerDuration);
     }    
 }

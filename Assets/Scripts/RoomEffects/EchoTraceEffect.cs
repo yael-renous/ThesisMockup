@@ -28,13 +28,13 @@ public class EchoTraceEffect : RoomEffect
 
     #endregion
 
-    public override void Activate(AudioClip audioClip)
+    public override void Activate(int audioId)
     {
         Debug.Log("EchoTraceEffect activated");
-        AnimateRaysInSphere(SceneManager.Instance.projectionTransform, audioClip);
+        AnimateRaysInSphere(SceneManager.Instance.projectionTransform, audioId);
     }
 
-    void AnimateRaysInSphere(Transform originTransform, AudioClip audioClip)
+    void AnimateRaysInSphere(Transform originTransform, int audioId)
     {
         float angleIncrement = 2 * Mathf.PI / numLasers;
 
@@ -46,11 +46,11 @@ public class EchoTraceEffect : RoomEffect
                 0,
                 Mathf.Sin(angle)
             );
-            StartCoroutine(AnimateSingleRay(originTransform, i, direction, audioClip));
+            StartCoroutine(AnimateSingleRay(originTransform, i, direction, audioId));
         }
     }
 
-    IEnumerator AnimateSingleRay(Transform originTransform, int index, Vector3 direction, AudioClip audioClip)
+    IEnumerator AnimateSingleRay(Transform originTransform, int index, Vector3 direction, int audioId)
     {
         GameObject lineObject = new GameObject("LineRenderer");
         lineObject.transform.parent = this.transform;
@@ -86,7 +86,7 @@ public class EchoTraceEffect : RoomEffect
                 {
                     colorObjectMaterial.SetColor("_EmissionColor", uniqueColor);
                     roomObject.showColoredObject();
-                    roomObject.play(audioClip);
+                    roomObject.play(audioId);
                 }
 
                 totalDistance += segmentDistance;

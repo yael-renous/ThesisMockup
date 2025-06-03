@@ -81,7 +81,7 @@ public class AudioDetection : MonoBehaviour
     {
         int micPosition = Microphone.GetPosition(micName);
         float loudness = GetLoudnessFromAudioClip(micPosition, microphoneClip);
-            // Debug.Log("loudness: " + loudness);
+            // Debug.Log("loudness: " + lÒoudness);
 
         if (!isRecordingSegment && loudness > minThreshold)
         {

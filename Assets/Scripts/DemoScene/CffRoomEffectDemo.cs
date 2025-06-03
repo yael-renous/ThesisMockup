@@ -106,7 +106,7 @@ public class CffRoomEffectDemo : RoomEffect
     //     }
     // }
 
-    public override void Activate(AudioClip audioClip)
+    public override void Activate(int audioId)
     {
         Debug.Log("cffRoomEffect activated");
     }

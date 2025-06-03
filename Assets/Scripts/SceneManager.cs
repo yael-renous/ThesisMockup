@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
+using System.Collections.Generic;
 
 public class SceneManager : MonoBehaviour
 {
@@ -9,7 +10,9 @@ public class SceneManager : MonoBehaviour
     public Transform projectionTransform;
     public int currentEffectIndex = 0;
 
-    public AudioClip debugAudioClip;
+    private Dictionary<int, AudioClip> audioClips = new Dictionary<int, AudioClip>();
+    public AudioClip debugAudioClip; //deprecated
+    private int nextAudioId = 0;
     private Keyboard keyboard;
 
     [Header("Echo Effect Controls")]
@@ -37,7 +40,6 @@ public class SceneManager : MonoBehaviour
     {
         keyboard = Keyboard.current;
         AudioDetection.Instance.OnStartSpeaking += OnStartSpeaking;
-
     }
 
     private void OnDestroy()
@@ -54,13 +56,22 @@ public class SceneManager : MonoBehaviour
                 currentEffectIndex = 0;
             }
         }
-        
     }
 
     public void OnStartSpeaking(AudioClip audioClip)
     {
         Debug.Log("SceneManager: OnStartSpeaking");
-        debugAudioClip = audioClip;
-        roomEffects[currentEffectIndex].Activate(audioClip);
+        int audioId = nextAudioId++;
+        audioClips[audioId] = audioClip;
+        roomEffects[currentEffectIndex].Activate(audioId);
+    }
+
+    public AudioClip GetAudioClip(int audioId)
+    {
+        if (audioClips.TryGetValue(audioId, out AudioClip clip))
+        {
+            return clip;
+        }
+        return null;
     }
 }

@@ -39,6 +39,7 @@ public class RaycastEchoDemo : RoomEffect
         }
     }
 
+    public override void Activate(int audioId){}
     public override void Activate(AudioClip audioClip)
     {
          
