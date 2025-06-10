@@ -3,7 +3,6 @@ using UnityEngine;
 public class RoomObject : MonoBehaviour
 {
    public AudioSource audioSource;
-   private AudioClip audioClipToPlay = null;
    public GameObject ColoredObject;
    public string name;
 
@@ -46,17 +45,18 @@ public class RoomObject : MonoBehaviour
 
    void OnParticleCollision(GameObject other)
    {
+        Debug.Log($"{name}: OnParticleCollision");
         // Only play if enough time has passed since last play
         if (Time.time - audioStartTime >= minPlayTimeInSeconds)
         {
-            Debug.Log("RoomObject: OnParticleCollision");
+            // Debug.Log("RoomObject: OnParticleCollision");
             // Get the parent GameObject's name instead of the particle system's name
-            string parentName = other.transform.parent.name;
-            Debug.Log("RoomObject: Parent name: " + parentName);
+            string parentName = other.transform.name;
+            // Debug.Log("RoomObject: Parent name: " + parentName);
             // Get the audio ID from the parent GameObject's name
             if (int.TryParse(parentName, out int id))
             {
-                Debug.Log("RoomObject: Playing audio with ID: " + id);
+                // Debug.Log("RoomObject: Playing audio with ID: " + id);
                 play(id);
                 audioStartTime = Time.time;
             }
@@ -76,9 +76,9 @@ public class RoomObject : MonoBehaviour
 
     //    Debug.Log($"Playing audio {audioClip.length} seconds at volume {volume}, cutoff {cutoff}");
        AudioClip audioClip = SceneManager.Instance.GetAudioClip(audioId);
-       Debug.Log("RoomObject: Playing audio with ID: " + audioClip);
+       Debug.LogWarning($" {name}: Playing audio with ID: " + audioId);
         audioSource.PlayOneShot(audioClip);
-       Debug.Log($"{name} playing audio");
+    //    Debug.Log($"{name} playing audio");
    }
 
    private float CalculateEchoVolume(float timeSinceDetection)

@@ -12,4 +12,9 @@ public class ScannerController : MonoBehaviour
     public void SetAudioClipId(int audioId){
         this.audioId = audioId;
     }
+
+    void OnParticleCollision(GameObject other)
+    {
+        Debug.Log($"ScannerController: OnParticleCollision: {audioId}");
+    }
 }

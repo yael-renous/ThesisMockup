@@ -81,11 +81,9 @@ public class AudioDetection : MonoBehaviour
     {
         int micPosition = Microphone.GetPosition(micName);
         float loudness = GetLoudnessFromAudioClip(micPosition, microphoneClip);
-            // Debug.Log("loudness: " + lÒoudness);
 
         if (!isRecordingSegment && loudness > minThreshold)
         {
-            // Start recording a 2-second segment
             isRecordingSegment = true;
             segmentTimer = 0f;
             segmentStartSample = micPosition;
@@ -109,6 +107,12 @@ public class AudioDetection : MonoBehaviour
     {
         int totalSamples = microphoneClip.samples;
         int channels = microphoneClip.channels;
+        
+        if (startSample < 0 || startSample >= totalSamples || endSample < 0 || endSample >= totalSamples)
+        {
+            return;
+        }
+
         int segmentLength;
         if (endSample < startSample)
         {
@@ -118,27 +122,52 @@ public class AudioDetection : MonoBehaviour
         {
             segmentLength = endSample - startSample;
         }
-        if (segmentLength <= 0) return;
+
+        if (segmentLength <= 0 || segmentLength > totalSamples)
+        {
+            return;
+        }
 
         float[] segmentData = new float[segmentLength * channels];
-        if (endSample < startSample)
+        
+        try
         {
-            float[] temp1 = new float[(totalSamples - startSample) * channels];
-            float[] temp2 = new float[endSample * channels];
-            microphoneClip.GetData(temp1, startSample);
-            microphoneClip.GetData(temp2, 0);
-            Array.Copy(temp1, 0, segmentData, 0, temp1.Length);
-            Array.Copy(temp2, 0, segmentData, temp1.Length, temp2.Length);
-        }
-        else
-        {
-            microphoneClip.GetData(segmentData, startSample);
-        }
+            if (endSample < startSample)
+            {
+                float[] temp1 = new float[(totalSamples - startSample) * channels];
+                float[] temp2 = new float[endSample * channels];
+                
+                bool success1 = microphoneClip.GetData(temp1, startSample);
+                bool success2 = microphoneClip.GetData(temp2, 0);
+                
+                if (!success1 || !success2)
+                {
+                    return;
+                }
+                
+                Array.Copy(temp1, 0, segmentData, 0, temp1.Length);
+                Array.Copy(temp2, 0, segmentData, temp1.Length, temp2.Length);
+            }
+            else
+            {
+                bool success = microphoneClip.GetData(segmentData, startSample);
+                
+                if (!success)
+                {
+                    Debug.LogError($"Failed to get audio data for normal segment. startSample={startSample}");
+                    return;
+                }
+            }
 
-        AudioClip segmentClip = AudioClip.Create("SpeechSegment", segmentLength, channels, sampleRate, false);
-        segmentClip.SetData(segmentData, 0);
-        SoundStartTime = Time.time;
-        OnStartSpeaking?.Invoke(segmentClip);
+            AudioClip segmentClip = AudioClip.Create("SpeechSegment", segmentLength, channels, sampleRate, false);
+            segmentClip.SetData(segmentData, 0);
+            SoundStartTime = Time.time;
+            OnStartSpeaking?.Invoke(segmentClip);
+        }
+        catch (Exception e)
+        {
+            Debug.LogError($"Error processing audio segment: {e.Message}\nStack trace: {e.StackTrace}");
+        }
     }
 
     public float GetLoudnessFromAudioClip(int clipPosition, AudioClip clip)

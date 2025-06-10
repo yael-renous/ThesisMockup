@@ -6,7 +6,6 @@ public class SceneManager : MonoBehaviour
 {
     public static SceneManager Instance { get; private set; }
     public RoomEffect[] roomEffects;
-    public RoomObject[] roomObjects;
     public Transform projectionTransform;
     public int currentEffectIndex = 0;
 
@@ -60,8 +59,9 @@ public class SceneManager : MonoBehaviour
 
     public void OnStartSpeaking(AudioClip audioClip)
     {
-        Debug.Log("SceneManager: OnStartSpeaking");
+      
         int audioId = nextAudioId++;
+        Debug.Log($"SceneManager: OnStartSpeaking: {audioId}");
         audioClips[audioId] = audioClip;
         roomEffects[currentEffectIndex].Activate(audioId);
     }
@@ -72,6 +72,6 @@ public class SceneManager : MonoBehaviour
         {
             return clip;
         }
-        return null;
+        return debugAudioClip; //TODO: remove this
     }
 }
