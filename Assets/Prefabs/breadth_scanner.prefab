@@ -4899,17 +4899,11 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8643758071030672257}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: dd950b06f8446416b960a1b6e98ac6ba, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  raycastDistance: 1
-  raycastCount: 21
-  collisionMask:
-    serializedVersion: 2
-    m_Bits: 256
-  checkInterval: 0.1
-  showDebugLogs: 1
-  showDebugRays: 1
-  rayColor: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
+  particleSystem: {fileID: 834805658714398530}
+  targetObject: {fileID: 0}
+  audioId: 0

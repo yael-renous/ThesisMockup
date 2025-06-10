@@ -4,9 +4,9 @@ using UnityEngine;
 public class ScannerController : MonoBehaviour
 {
     public ParticleSystem particleSystem;
-    public RoomObject targetObjectA;  // First target object
-    public RoomObject targetObjectB;  // Second target object
-    public float distanceThreshold = 1.8f;
+    public RoomObject targetObject;
+    public int audioId;
+
     private void Start()
     {
         // Get particle system if not assigned
@@ -20,49 +20,40 @@ public class ScannerController : MonoBehaviour
             }
         }
 
-        // Verify target objects
-        if (targetObjectA == null || targetObjectB == null)
+        // Verify target object
+        if (targetObject == null)
         {
-            Debug.LogError("Both target objects must be assigned!");
+            Debug.LogError("No target object assigned!");
             return;
         }
 
-        Debug.Log("ParticleTriggerDetector initialized successfully");
+        Debug.Log("ScannerController initialized successfully");
+    }
+
+    public void init(RoomObject targetObject, int audioId)
+    {
+        this.targetObject = targetObject;
+        this.audioId = audioId;
+        // Configure particle system trigger
+        var trigger = particleSystem.trigger;
+        // trigger.enabled = true;
+        // trigger.enter = ParticleSystemOverlapAction.Callback;
+        //configure target object to trigger this scanner
+        trigger.AddCollider(targetObject.GetComponent<Collider>());
     }
 
     private void OnParticleTrigger()
     {
-        if (particleSystem == null || targetObjectA == null || targetObjectB == null) return;
+        Debug.Log("OnParticleTrigger called");
+        if (particleSystem == null || targetObject == null) return;
 
-        List<ParticleSystem.Particle> particles = new List<ParticleSystem.Particle>();
-        int numParticles = particleSystem.GetTriggerParticles(ParticleSystemTriggerEventType.Enter, particles);
 
-        if (numParticles > 0)
-        {
-            Vector3 particlePos = particles[0].position;
-            
-            // Check distance to both target objects
-            float distanceToA = Vector3.Distance(particlePos, targetObjectA.transform.position);
-            float distanceToB = Vector3.Distance(particlePos, targetObjectB.transform.position);
-            
-            Debug.Log($"Particle position: {particlePos}");
-            Debug.Log($"Distance to A: {distanceToA}, Distance to B: {distanceToB}");
-            
             // Get the audio ID from the particle system's name
             if (int.TryParse(gameObject.name, out int audioId))
             {
-                // Check which object is closer and trigger its play function
-                if (distanceToA < distanceToB && distanceToA < distanceThreshold)
-                {
-                    Debug.Log("Particle triggered target A!");
-                    targetObjectA.play(audioId);
-                }
-                else if (distanceToB < distanceThreshold)
-                {
-                    Debug.Log("Particle triggered target B!");
-                    targetObjectB.play(audioId);
-                }
+                Debug.Log($"Playing target: {targetObject.name}");
+                targetObject.play(audioId);
             }
-        }
+        
     }
 }
