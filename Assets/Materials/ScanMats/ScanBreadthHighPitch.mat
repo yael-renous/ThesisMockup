@@ -12,12 +12,13 @@ Material:
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
   m_ValidKeywords:
+  - _ALPHATEST_ON
   - _SURFACE_TYPE_TRANSPARENT
   m_InvalidKeywords: []
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 1
-  m_CustomRenderQueue: -1
+  m_CustomRenderQueue: 3000
   stringTagMap:
     RenderType: Transparent
   disabledShaderPasses:
@@ -63,7 +64,7 @@ Material:
     m_Ints: []
     m_Floats:
     - _AddPrecomputedVelocity: 0
-    - _AlphaClip: 0
+    - _AlphaClip: 1
     - _AlphaToMask: 0
     - _Blend: 0
     - _BlendModePreserveSpecular: 1
@@ -74,7 +75,7 @@ Material:
     - _DstBlend: 10
     - _DstBlendAlpha: 10
     - _GlossinessSource: 0
-    - _IntersectionDepth: 1.8
+    - _IntersectionDepth: 1
     - _QueueControl: 0
     - _QueueOffset: 0
     - _ReceiveShadows: 1
@@ -93,7 +94,7 @@ Material:
     - _BaseColor: {r: 1, g: 0, b: 0, a: 1}
     - _Color: {r: 1, g: 0, b: 0, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
-    - _IntersectionColor: {r: 1, g: 0.090245284, b: 0, a: 1}
+    - _IntersectionColor: {r: 0.6792453, g: 0.19827026, b: 0.1505874, a: 1}
     - _SpecColor: {r: 0.5, g: 0.5, b: 0.5, a: 0.5}
   m_BuildTextureStacks: []
   m_AllowLocking: 1

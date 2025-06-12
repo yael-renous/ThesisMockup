@@ -81,19 +81,19 @@ public class RoomObject : MonoBehaviour
     //    Debug.Log($"{name} playing audio");
    }
 
-   private float CalculateEchoVolume(float timeSinceDetection)
-   {
-       // Higher = faster fade
-       return Mathf.Exp(-timeSinceDetection * SceneManager.Instance.volumeDecayRate);
-   }
+//    private float CalculateEchoVolume(float timeSinceDetection)
+//    {
+//        // Higher = faster fade
+//        return Mathf.Exp(-timeSinceDetection * SceneManager.Instance.volumeDecayRate);
+//    }
 
-   private float CalculateEchoCutoff(float timeSinceDetection)
-   {
-       float minCutoff = 500f;
-       float maxCutoff = 22000f;
-       // Higher = faster muffling
-       return Mathf.Lerp(maxCutoff, minCutoff, Mathf.Clamp01(timeSinceDetection * SceneManager.Instance.cutoffDecayRate));
-   }
+//    private float CalculateEchoCutoff(float timeSinceDetection)
+//    {
+//        float minCutoff = 500f;
+//        float maxCutoff = 22000f;
+//        // Higher = faster muffling
+//        return Mathf.Lerp(maxCutoff, minCutoff, Mathf.Clamp01(timeSinceDetection * SceneManager.Instance.cutoffDecayRate));
+//    }
 
    private void StopAudio()
    {
