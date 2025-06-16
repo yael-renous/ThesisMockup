@@ -11,7 +11,7 @@ public class ScanRoomEffect : RoomEffect
 
     public GameObject scannerPrefab;
 
-    private float scannerDuration=100f;
+    private float scannerDuration=10f;
     [SerializeField] private bool playDebug = false;
     private Keyboard keyboard;
 

@@ -164,8 +164,8 @@ public class AudioDetection : MonoBehaviour
 
             AudioClip segmentClip = AudioClip.Create("SpeechSegment", segmentLength, channels, sampleRate, false);
             segmentClip.SetData(segmentData, 0);
-            string pitch = ClassifyPitch(segmentData, sampleRate);
-            Debug.LogWarning("Pitch: " + pitch);
+            // string pitch = ClassifyPitch(segmentData, sampleRate);
+            // Debug.LogWarning("Pitch: " + pitch);
             SoundStartTime = Time.time;
             OnStartSpeaking?.Invoke(segmentClip);
         }
