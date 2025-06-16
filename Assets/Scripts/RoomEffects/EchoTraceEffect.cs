@@ -31,7 +31,7 @@ public class EchoTraceEffect : RoomEffect
     public override void Activate(int audioId)
     {
         Debug.Log("EchoTraceEffect activated");
-        AnimateRaysInSphere(SceneManager.Instance.projectionTransform, audioId);
+        AnimateRaysInSphere(SceneManager.Instance.micTransform, audioId);
     }
 
     void AnimateRaysInSphere(Transform originTransform, int audioId)
@@ -81,7 +81,6 @@ public class EchoTraceEffect : RoomEffect
                 float segmentTime = segmentDistance / 343f;
 
                 yield return StartCoroutine(AnimateSegment(origin, hitPoint, segmentTime * animationSpeed, lr));
-
                 if (roomObject != null)
                 {
                     colorObjectMaterial.SetColor("_EmissionColor", uniqueColor);

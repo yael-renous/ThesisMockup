@@ -4905,7 +4905,7 @@ GameObject:
   - component: {fileID: 7010266117012821515}
   - component: {fileID: 8095858908421103236}
   m_Layer: 8
-  m_Name: TerrainScanner
+  m_Name: RevealScanner
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -5117,7 +5117,7 @@ ParticleSystem:
       serializedVersion: 2
       minMaxState: 0
       minColor: {r: 1, g: 1, b: 1, a: 1}
-      maxColor: {r: 1, g: 1, b: 1, a: 1}
+      maxColor: {r: 0, g: 0, b: 0, a: 1}
       maxGradient:
         serializedVersion: 2
         key0: {r: 1, g: 1, b: 1, a: 1}
@@ -9733,7 +9733,7 @@ ParticleSystemRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 1ecee676ef1374b85911f3b1ebc85241, type: 2}
+  - {fileID: 2100000, guid: 7071fe6b89b7648f1afd6e60c0a43551, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -9801,3 +9801,4 @@ MonoBehaviour:
   particleSystem: {fileID: 834805658714398530}
   targetObject: {fileID: 0}
   audioId: 0
+  spotlightVersion: 1

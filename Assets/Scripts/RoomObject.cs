@@ -1,11 +1,13 @@
 using UnityEngine;
+using DG.Tweening;
 
 public class RoomObject : MonoBehaviour
 {
    public AudioSource audioSource;
    public GameObject ColoredObject;
    public string name;
-
+   public GameObject spotlight;
+   public float lightIntensity = 300f; // Added public parameter for light intensity
    private float audioStartTime = 0f; // To track when the audio started playing
    public float minPlayTimeInSeconds = 0.5f;
    private AudioLowPassFilter lowPass;
@@ -27,6 +29,7 @@ public class RoomObject : MonoBehaviour
        lowPass.cutoffFrequency = 22000f;
 
        ColoredObject.SetActive(false);
+       spotlight.SetActive(false);
    }
 
 
@@ -42,6 +45,15 @@ public class RoomObject : MonoBehaviour
    }
 
 
+   public void showSpotlightandPlay(int audioId){
+    spotlight.SetActive(true);
+    // Fade in the spotlight
+    spotlight.GetComponent<Light>().DOIntensity(lightIntensity, 0.3f).From(0f);
+    play(audioId);
+    // Fade out the spotlight
+    spotlight.GetComponent<Light>().DOIntensity(0f, 0.3f).SetDelay(0.3f)
+        .OnComplete(() => spotlight.SetActive(false));
+   }
 
    void OnParticleCollision(GameObject other)
    {
@@ -65,35 +77,11 @@ public class RoomObject : MonoBehaviour
 
    public void play(int audioId)
    {
-    //    float timeSinceDetection = Time.time - AudioDetection.Instance.SoundStartTime;
-    //    float volume = CalculateEchoVolume(timeSinceDetection);
-    //    float cutoff = CalculateEchoCutoff(timeSinceDetection);
-
-    //    audioSource.volume = Mathf.Clamp01(volume);
-
-    //    // Just set the cutoff, filter is always present
-    //    lowPass.cutoffFrequency = cutoff;
-
-    //    Debug.Log($"Playing audio {audioClip.length} seconds at volume {volume}, cutoff {cutoff}");
        AudioClip audioClip = SceneManager.Instance.GetAudioClip(audioId);
-    //    Debug.LogWarning($" {name}: Playing audio with ID: " + audioId);
         audioSource.PlayOneShot(audioClip);
-    //    Debug.Log($"{name} playing audio");
    }
 
-//    private float CalculateEchoVolume(float timeSinceDetection)
-//    {
-//        // Higher = faster fade
-//        return Mathf.Exp(-timeSinceDetection * SceneManager.Instance.volumeDecayRate);
-//    }
 
-//    private float CalculateEchoCutoff(float timeSinceDetection)
-//    {
-//        float minCutoff = 500f;
-//        float maxCutoff = 22000f;
-//        // Higher = faster muffling
-//        return Mathf.Lerp(maxCutoff, minCutoff, Mathf.Clamp01(timeSinceDetection * SceneManager.Instance.cutoffDecayRate));
-//    }
 
    private void StopAudio()
    {

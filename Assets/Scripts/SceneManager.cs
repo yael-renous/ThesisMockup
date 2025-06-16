@@ -4,24 +4,49 @@ using System.Collections.Generic;
 
 public class SceneManager : MonoBehaviour
 {
+    #region Singleton
     public static SceneManager Instance { get; private set; }
-    public RoomEffect[] roomEffects;
-    public Transform projectionTransform;
-    public int currentEffectIndex = 0;
+    #endregion
 
-    private Dictionary<int, AudioClip> audioClips = new Dictionary<int, AudioClip>();
+    #region Inspector Variables
+    [Header("Room Effects")]
+    public RoomEffect[] roomEffects;
+    public Transform micTransform;
+    public int currentEffectIndex = 0;
+    [Tooltip("Time in minutes between effect changes")]
+    public float effectChangeInterval = 5f;
+
+    [Header("Audio Settings")]
+    public int chirpAudioId = -10;
+    public AudioClip chirpAudioClip;
     public AudioClip debugAudioClip; //deprecated
+
+    [Header("Visual Effects")]
+    public ParticleSystem[] batScanners;
+
+    [Header("Static Mode Settings")]
+    [Tooltip("Time in seconds of silence before entering static mode")]
+    public float staticModeThreshold = 5f;
+    [Tooltip("Time in seconds between bat scanner sequences")]
+    public float batScannerInterval = 10f;
+    #endregion
+
+    #region Private Variables
+    private Dictionary<int, AudioClip> audioClips = new Dictionary<int, AudioClip>();
     private int nextAudioId = 0;
     private Keyboard keyboard;
+    private float lastEffectChangeTime = 0f;
 
-    [Header("Echo Effect Controls")]
-    [Tooltip("How quickly the echo volume fades out. Higher = faster fade.")]
-    public float volumeDecayRate = 0.1f;
+    // Static Mode Variables
+    private float lastCheckTime = 0f;
+    public float checkInterval = 2f; // Check every second
+    private bool staticMode = true;
+    private int batScannerPlayCount = 0;
+    private float lastBatScannerTime = 0f;
+    private const int MAX_BAT_SCANNER_PLAYS = 4;
+    #endregion
 
-    [Tooltip("How quickly the cutoff frequency drops (muffling). Higher = faster muffling.")]
-    public float cutoffDecayRate = 0.2f; // e.g., 0.2 means fully muffled in 5 seconds
-
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
+    #region Unity Lifecycle Methods
     void Awake()
     {
         if (Instance == null)
@@ -39,6 +64,8 @@ public class SceneManager : MonoBehaviour
     {
         keyboard = Keyboard.current;
         AudioDetection.Instance.OnStartSpeaking += OnStartSpeaking;
+        EnterStaticMode();
+        lastEffectChangeTime = Time.time;
     }
 
     private void OnDestroy()
@@ -46,20 +73,89 @@ public class SceneManager : MonoBehaviour
         AudioDetection.Instance.OnStartSpeaking -= OnStartSpeaking;
     }
 
-    // Update is called once per frame
     void Update()
     {
-        if(keyboard.enterKey.wasPressedThisFrame){
+        HandleEffectChange();
+        HandleStaticModeCheck();
+    }
+    #endregion
+
+    #region Input Handling
+    private void HandleKeyboardInput()
+    {
+        if(keyboard.enterKey.wasPressedThisFrame)
+        {
             currentEffectIndex++;
-            if(currentEffectIndex >= roomEffects.Length){
+            if(currentEffectIndex >= roomEffects.Length)
+            {
                 currentEffectIndex = 0;
             }
         }
     }
+    #endregion
 
+    #region Static Mode Logic
+    private void HandleStaticModeCheck()
+    {
+        if (Time.time - lastCheckTime >= checkInterval)
+        {
+            if(!staticMode)
+            {
+                CheckForStaticMode();
+            }
+            else
+            {
+                PlayStaticBatScanners();
+            }
+            lastCheckTime = Time.time;
+        }
+    }
+
+    private void CheckForStaticMode()
+    {
+        float timeSinceLastRecording = Time.time - AudioDetection.Instance.SoundStartTime;
+        if (timeSinceLastRecording >= staticModeThreshold)
+        {
+            EnterStaticMode();
+        }
+    }
+
+    private void EnterStaticMode()
+    {
+        staticMode = true;
+        // Reset bat scanner sequence
+        batScannerPlayCount = 0;
+        lastBatScannerTime = Time.time;
+    }
+
+    public void PlayStaticBatScanners()
+    {
+        float currentTime = Time.time;
+        Debug.Log($"SceneManager: PlayStaticBatScanners: {batScannerPlayCount}");
+        // If we haven't played any bat scanners yet or enough time has passed since the last sequence
+        if (batScannerPlayCount == 0 || (currentTime - lastBatScannerTime >= batScannerInterval))
+        {
+            // Reset the sequence
+            batScannerPlayCount = 0;
+            lastBatScannerTime = currentTime;
+        }
+
+        // If we haven't played all 4 times in the current sequence
+        if (batScannerPlayCount < MAX_BAT_SCANNER_PLAYS)
+        {
+            foreach (var scanner in batScanners)
+            {
+                scanner.Play();
+            }
+            batScannerPlayCount++;
+        }
+    }
+    #endregion
+
+    #region Audio Management
     public void OnStartSpeaking(AudioClip audioClip)
     {
-      
+        staticMode = false;
         int audioId = nextAudioId++;
         Debug.Log($"SceneManager: OnStartSpeaking: {audioId}");
         audioClips[audioId] = audioClip;
@@ -68,10 +164,39 @@ public class SceneManager : MonoBehaviour
 
     public AudioClip GetAudioClip(int audioId)
     {
+        if(audioId == chirpAudioId)
+        {
+            return chirpAudioClip;
+        }
         if (audioClips.TryGetValue(audioId, out AudioClip clip))
         {
             return clip;
         }
         return debugAudioClip; //TODO: remove this
     }
+    #endregion
+
+    #region Effect Management
+    private void HandleEffectChange()
+    {
+        float currentTime = Time.time;
+        float timeSinceLastChange = (currentTime - lastEffectChangeTime) / 60f; // Convert to minutes
+
+        if (timeSinceLastChange >= effectChangeInterval)
+        {
+            ChangeEffect();
+            lastEffectChangeTime = currentTime;
+        }
+    }
+
+    private void ChangeEffect()
+    {
+        currentEffectIndex++;
+        if (currentEffectIndex >= roomEffects.Length)
+        {
+            currentEffectIndex = 0;
+        }
+        Debug.Log($"SceneManager: Changed effect to index {currentEffectIndex}");
+    }
+    #endregion
 }

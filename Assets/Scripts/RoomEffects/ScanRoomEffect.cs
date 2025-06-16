@@ -4,16 +4,14 @@ using System.Collections.Generic;
 
 public class ScanRoomEffect : RoomEffect
 {
-    public Material highPitchMaterial;
-    public Material mediumPitchMaterial;
-    public Material lowPitchMaterial;
-    private Material[] materials;
+
+    public Material[] materials;
 
     public GameObject scannerPrefab;
 
     private float scannerDuration=10f;
-    [SerializeField] private bool playDebug = false;
-    private Keyboard keyboard;
+
+    public bool spotlightVersion = false;
 
     // Find all RoomObjects in the scene
     public RoomObject[] roomObjects;
@@ -21,8 +19,7 @@ public class ScanRoomEffect : RoomEffect
 
     void Start()
     {
-        materials = new Material[]{highPitchMaterial, mediumPitchMaterial, lowPitchMaterial};
-        keyboard = Keyboard.current;
+       
         
         // Initialize scanners for all room objects
        
@@ -41,14 +38,17 @@ public class ScanRoomEffect : RoomEffect
 
     private void CreateScanner(RoomObject targetObject)
     {
-        GameObject scanner = Instantiate(scannerPrefab, SceneManager.Instance.projectionTransform.position, Quaternion.identity);
+        GameObject scanner = Instantiate(scannerPrefab, SceneManager.Instance.micTransform.position, Quaternion.identity);
         scanner.name = "Scanner_" + targetObject.name;
+        
+        // Set the scanner's layer to match the target object's layer (not including children)
+        scanner.layer = targetObject.gameObject.layer;
         
         // Get and configure the ScannerController
         ScannerController scannerController = scanner.GetComponent<ScannerController>();
         if (scannerController != null)
         {
-            scannerController.init(targetObject, 0); // We'll update the audioId when activating
+            scannerController.init(targetObject, 0, spotlightVersion); // We'll update the audioId when activating
             
             // Store particle system reference
             ParticleSystem particleSystem = scanner.GetComponent<ParticleSystem>();
@@ -56,8 +56,10 @@ public class ScanRoomEffect : RoomEffect
             
             // Configure the particle system
             ParticleSystemRenderer particleRenderer = scanner.GetComponent<ParticleSystemRenderer>();
-            particleRenderer.material = highPitchMaterial;
-            
+            //randomly select a material
+            if(!spotlightVersion){
+                particleRenderer.material = materials[Random.Range(0, materials.Length)];
+            }
             // Stop the particle system initially
             particleSystem.Stop();
         }
