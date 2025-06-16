@@ -4839,7 +4839,7 @@ ParticleSystemRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 1ecee676ef1374b85911f3b1ebc85241, type: 2}
+  - {fileID: 2100000, guid: 354afcf52f7f54a3aa56641232a72ad4, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -9801,3 +9801,4 @@ MonoBehaviour:
   particleSystem: {fileID: 834805658714398530}
   targetObject: {fileID: 0}
   audioId: 0
+  spotlightVersion: 0

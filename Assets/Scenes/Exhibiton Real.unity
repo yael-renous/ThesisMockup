@@ -10505,7 +10505,7 @@ MonoBehaviour:
   - {fileID: 2039174841}
   - {fileID: 567877481}
   micTransform: {fileID: 1482719731}
-  currentEffectIndex: 3
+  currentEffectIndex: 0
   effectChangeInterval: 1
   chirpAudioId: -10
   chirpAudioClip: {fileID: 8300000, guid: 4995a9ab7af59472693958b25d603a9b, type: 3}
@@ -12018,7 +12018,7 @@ Transform:
   m_GameObject: {fileID: 751010432}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -1.18, y: 0, z: 0.51}
+  m_LocalPosition: {x: -0.697, y: 0, z: -0.079}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -12804,7 +12804,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   debugAudioClip: {fileID: 0}
-  materials: []
+  materials:
+  - {fileID: 2100000, guid: 354afcf52f7f54a3aa56641232a72ad4, type: 2}
   scannerPrefab: {fileID: 8643758071030672257, guid: 138c5712772d946dcba291e7f259c76a, type: 3}
   spotlightVersion: 0
   roomObjects:
@@ -13330,15 +13331,17 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   debugAudioClip: {fileID: 0}
-  numLasers: 10
-  maxBounces: 3
-  maxDistance: 80
+  numLasers: 20
+  maxBounces: 8
+  maxDistance: 100
   lineWidth: 0.04
   animationSpeed: 80
   lineLifetime: 0.04
   showFullLine: 0
   lineColors:
+  - {r: 0.94275093, g: 0, b: 1, a: 0}
   - {r: 0.10323429, g: 1, b: 0, a: 0}
+  - {r: 0, g: 1, b: 0.8869717, a: 0}
   lineMaterial: {fileID: 2100000, guid: 1fc790ede5a0f43069c44b1d77efffb8, type: 2}
   offsetX: 0
   offsetY: 1
@@ -15125,8 +15128,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 1, y: 6.6512957, z: 0.42040777}
-  m_Center: {x: -0.78999996, y: 2.7193522, z: 0.12979615}
+  m_Size: {x: 0.75, y: 10.38, z: 1.18}
+  m_Center: {x: -0.44, y: 2.7193522, z: 0.12979615}
 --- !u!135 &1631207338
 SphereCollider:
   m_ObjectHideFlags: 0
