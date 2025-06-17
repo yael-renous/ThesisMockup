@@ -23,18 +23,19 @@ public class EchoTraceEffect : RoomEffect
     public float offsetY = 0f;
     public float offsetZ = 0f;
 
-    [Header("Object Interaction")]
-    public Material colorObjectMaterial;
+  
+    // public Material colorObjectMaterial;
 
     #endregion
 
     public override void Activate(int audioId)
     {
         Debug.Log("EchoTraceEffect activated");
-        AnimateRaysInSphere(SceneManager.Instance.micTransform, audioId);
+        Color uniqueColor = lineColors[audioId % lineColors.Length];
+        AnimateRaysInSphere(SceneManager.Instance.micTransform, audioId, uniqueColor);
     }
 
-    void AnimateRaysInSphere(Transform originTransform, int audioId)
+    void AnimateRaysInSphere(Transform originTransform, int audioId, Color uniqueColor)
     {
         float angleIncrement = 2 * Mathf.PI / numLasers;
 
@@ -46,11 +47,11 @@ public class EchoTraceEffect : RoomEffect
                 0,
                 Mathf.Sin(angle)
             );
-            StartCoroutine(AnimateSingleRay(originTransform, i, direction, audioId));
+            StartCoroutine(AnimateSingleRay(originTransform, i, direction, audioId, uniqueColor));
         }
     }
 
-    IEnumerator AnimateSingleRay(Transform originTransform, int index, Vector3 direction, int audioId)
+    IEnumerator AnimateSingleRay(Transform originTransform, int index, Vector3 direction, int audioId, Color uniqueColor)
     {
         GameObject lineObject = new GameObject("LineRenderer");
         lineObject.transform.parent = this.transform;
@@ -60,7 +61,6 @@ public class EchoTraceEffect : RoomEffect
         lr.startWidth = lineWidth;
         lr.endWidth = lineWidth * 0.5f;
 
-        Color uniqueColor = lineColors[index % lineColors.Length];
         lr.material = lineMaterial;
         lr.material.SetColor("_EmissionColor", uniqueColor);
 
@@ -83,8 +83,8 @@ public class EchoTraceEffect : RoomEffect
                 yield return StartCoroutine(AnimateSegment(origin, hitPoint, segmentTime * animationSpeed, lr));
                 if (roomObject != null)
                 {
-                    colorObjectMaterial.SetColor("_EmissionColor", uniqueColor);
-                    roomObject.showColoredObject();
+                    // colorObjectMaterial.SetColor("_EmissionColor", uniqueColor);
+                    roomObject.showColoredObject(uniqueColor);
                     roomObject.play(audioId);
                 }
 

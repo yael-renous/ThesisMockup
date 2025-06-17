@@ -5,6 +5,8 @@ public class RoomObject : MonoBehaviour
 {
    public AudioSource audioSource;
    public GameObject ColoredObject;
+   public GameObject RealColoredObject;
+   public Material[] ColoredObjectMaterials;
    public string name;
    public GameObject spotlight;
    public float lightIntensity = 300f; // Added public parameter for light intensity
@@ -33,19 +35,25 @@ public class RoomObject : MonoBehaviour
    }
 
 
-   public void showColoredObject(){
+   public void showColoredObject(Color color){
     if(ColoredObject != null){
+        foreach(Material material in ColoredObjectMaterials){
+            material.SetColor("_BaseColor", color);
+        }
+        RealColoredObject.SetActive(false);
         ColoredObject.SetActive(true);
         Invoke("hideColoredObject", 0.3f);
     }
    }
 
    public void hideColoredObject(){
+    RealColoredObject.SetActive(true);
     ColoredObject.SetActive(false);
    }
 
 
    public void showSpotlightandPlay(int audioId){
+    // RealColoredObject.SetActive(true);
     spotlight.SetActive(true);
     // Fade in the spotlight
     spotlight.GetComponent<Light>().DOIntensity(lightIntensity, 0.3f).From(0f);
