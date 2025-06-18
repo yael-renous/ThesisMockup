@@ -324,6 +324,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   particleSystem: {fileID: 61134671}
+  childParticleSystem: {fileID: 0}
+  childParticleSystemRenderer: {fileID: 0}
+  particleSystemRenderer: {fileID: 0}
   targetObject: {fileID: 1803496991}
   audioId: -1
   spotlightVersion: 0
@@ -10325,25 +10328,24 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   roomEffects:
-  - {fileID: 2039174841}
+  - {fileID: 567877481}
   - {fileID: 1173648371}
   - {fileID: 965854014}
-  - {fileID: 567877481}
   micTransform: {fileID: 1482719731}
-  currentEffectIndex: 1
-  effectChangeInterval: 1
+  currentEffectIndex: 2
+  effectChangeInterval: 2
   backgroundEffects:
-  - {fileID: 178660601}
   - {fileID: 1979724803}
+  - {fileID: 178660601}
   - {fileID: 761721908}
   currentBackgroundEffectIndex: 0
   chirpAudioId: -10
   chirpAudioClip: {fileID: 8300000, guid: 4995a9ab7af59472693958b25d603a9b, type: 3}
-  debugAudioClip: {fileID: 8300000, guid: f30aefa89d8db4725bcf7109a8f4bc9d, type: 3}
+  debugAudioClip: {fileID: 0}
   batScanners:
   - {fileID: 834805658130216549}
   - {fileID: 61134671}
-  staticModeThreshold: 200
+  staticModeThreshold: 10000000
   batScannerInterval: 500000
   checkInterval: 1
 --- !u!1001 &165802886
@@ -10464,7 +10466,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   roomCubeParent: {fileID: 5404195}
-  duration: 0.1
+  duration: 1
 --- !u!1 &213946401
 GameObject:
   m_ObjectHideFlags: 0
@@ -10819,9 +10821,9 @@ Light:
   m_RenderMode: 0
   m_CullingMask:
     serializedVersion: 2
-    m_Bits: 4294967295
+    m_Bits: 8439
   m_RenderingLayerMask: 1
-  m_Lightmapping: 4
+  m_Lightmapping: 2
   m_LightShadowCasterMode: 0
   m_AreaSize: {x: 1, y: 1}
   m_BounceIntensity: 1
@@ -12464,7 +12466,6 @@ MonoBehaviour:
   - {fileID: 2100000, guid: 823840b2f03fb41208e8a09e0ce87d9b, type: 2}
   name: bush left
   spotlight: {fileID: 2049793750}
-  lightIntensity: 30
   minPlayTimeInSeconds: 0.5
 --- !u!82 &751010435
 AudioSource:
@@ -12748,8 +12749,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   fireflies: {fileID: 2107961948}
   audioSource: {fileID: 761721909}
-  audioClip: {fileID: 8300000, guid: 4995a9ab7af59472693958b25d603a9b, type: 3}
-  duration: 5
+  audioClip: {fileID: 8300000, guid: 5f8d0cfccaffe475396d6cc10fe10ee1, type: 3}
+  duration: 1
 --- !u!82 &761721909
 AudioSource:
   m_ObjectHideFlags: 0
@@ -13645,6 +13646,7 @@ MonoBehaviour:
   debugAudioClip: {fileID: 0}
   materials:
   - {fileID: 2100000, guid: 354afcf52f7f54a3aa56641232a72ad4, type: 2}
+  - {fileID: 2100000, guid: 0a5b7fc787bd54ba48888e67af509ad4, type: 2}
   scannerPrefab: {fileID: 8643758071030672257, guid: 138c5712772d946dcba291e7f259c76a, type: 3}
   spotlightVersion: 0
   roomObjects:
@@ -13942,6 +13944,34 @@ PrefabInstance:
       propertyPath: InitialModule.startSize.minScalar
       value: 0.2
       objectReference: {fileID: 0}
+    - target: {fileID: 198929192870305122, guid: 379785de5e39005469c875710d3cc5a7, type: 3}
+      propertyPath: InitialModule.startColor.maxColor.b
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 198929192870305122, guid: 379785de5e39005469c875710d3cc5a7, type: 3}
+      propertyPath: InitialModule.startColor.maxColor.g
+      value: 0.9500499
+      objectReference: {fileID: 0}
+    - target: {fileID: 198929192870305122, guid: 379785de5e39005469c875710d3cc5a7, type: 3}
+      propertyPath: InitialModule.startColor.maxColor.r
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 198929192870305122, guid: 379785de5e39005469c875710d3cc5a7, type: 3}
+      propertyPath: InitialModule.startColor.minColor.b
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 198929192870305122, guid: 379785de5e39005469c875710d3cc5a7, type: 3}
+      propertyPath: InitialModule.startColor.minColor.g
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 198929192870305122, guid: 379785de5e39005469c875710d3cc5a7, type: 3}
+      propertyPath: InitialModule.startColor.minColor.r
+      value: 0.9528302
+      objectReference: {fileID: 0}
+    - target: {fileID: 198929192870305122, guid: 379785de5e39005469c875710d3cc5a7, type: 3}
+      propertyPath: InitialModule.startColor.minMaxState
+      value: 3
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -14131,13 +14161,13 @@ MonoBehaviour:
   lineLifetime: 0.04
   showFullLine: 0
   lineColors:
-  - {r: 1, g: 0.12452647, b: 0, a: 0}
-  - {r: 1, g: 0.5893744, b: 0, a: 0}
-  - {r: 1, g: 0.8593203, b: 0, a: 0}
+  - {r: 0, g: 0.990566, b: 0.6741352, a: 0}
+  - {r: 0.8773585, g: 0.15525311, b: 0.053800307, a: 0}
   lineMaterial: {fileID: 2100000, guid: 1fc790ede5a0f43069c44b1d77efffb8, type: 2}
   offsetX: 0
   offsetY: 1
   offsetZ: 0
+  showObjectsHit: 1
 --- !u!1 &1176103692
 GameObject:
   m_ObjectHideFlags: 0
@@ -14293,7 +14323,6 @@ MonoBehaviour:
   - {fileID: 2100000, guid: 2e59d115b626940b097183f68d9331ac, type: 2}
   name: maple tree right back
   spotlight: {fileID: 36757486}
-  lightIntensity: 60
   minPlayTimeInSeconds: 0.5
 --- !u!65 &1176103696
 BoxCollider:
@@ -15999,7 +16028,6 @@ MonoBehaviour:
   - {fileID: 2100000, guid: d48ae92b16ddc4731ba72f84323d0ff5, type: 2}
   name: tree left
   spotlight: {fileID: 1337319654}
-  lightIntensity: 300
   minPlayTimeInSeconds: 0.5
 --- !u!65 &1631207337
 BoxCollider:
@@ -16313,7 +16341,6 @@ MonoBehaviour:
   - {fileID: 2100000, guid: 41aa112c7d0e54f0b8db7e206357a965, type: 2}
   name: front bush
   spotlight: {fileID: 383822159}
-  lightIntensity: 30
   minPlayTimeInSeconds: 0.5
 --- !u!65 &1680837278
 BoxCollider:
@@ -16708,7 +16735,6 @@ MonoBehaviour:
   - {fileID: 2100000, guid: 677d5b2db309f48fdb34e06f6e3611ec, type: 2}
   name: flowers
   spotlight: {fileID: 862051147}
-  lightIntensity: 30
   minPlayTimeInSeconds: 0.5
 --- !u!65 &1803496992
 BoxCollider:
@@ -16869,6 +16895,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1979724802}
   - component: {fileID: 1979724803}
+  - component: {fileID: 1979724804}
   m_Layer: 0
   m_Name: ForestView
   m_TagString: Untagged
@@ -16910,11 +16937,110 @@ MonoBehaviour:
   - {fileID: 839617070}
   - {fileID: 1274407423}
   - {fileID: 1265071635}
+  light: {fileID: 224082051}
+  audioSource: {fileID: 1979724804}
   camerasParentTransform: {fileID: 235880920}
   leftBound: {x: -438.5, y: -21.8, z: -67.8}
   rightBound: {x: -122.1, y: -21.8, z: -4}
   roomCubeParent: {fileID: 5404195}
-  duration: 0.3
+  duration: 3
+--- !u!82 &1979724804
+AudioSource:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1979724801}
+  m_Enabled: 1
+  serializedVersion: 4
+  OutputAudioMixerGroup: {fileID: 567426357867185968, guid: 4574b9bccb556402b912f0d374acf6cc, type: 2}
+  m_audioClip: {fileID: 0}
+  m_Resource: {fileID: 0}
+  m_PlayOnAwake: 1
+  m_Volume: 0.767
+  m_Pitch: -0.29
+  Loop: 0
+  Mute: 0
+  Spatialize: 0
+  SpatializePostEffects: 0
+  Priority: 128
+  DopplerLevel: 1
+  MinDistance: 1
+  MaxDistance: 500
+  Pan2D: 0
+  rolloffMode: 0
+  BypassEffects: 0
+  BypassListenerEffects: 0
+  BypassReverbZones: 0
+  rolloffCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  panLevelCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  spreadCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  reverbZoneMixCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
 --- !u!1 &2039174839
 GameObject:
   m_ObjectHideFlags: 0
@@ -16973,6 +17099,7 @@ MonoBehaviour:
   offsetX: 0
   offsetY: 0
   offsetZ: 0
+  showObjectsHit: 0
 --- !u!1 &2044185115
 GameObject:
   m_ObjectHideFlags: 0
@@ -27040,6 +27167,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   particleSystem: {fileID: 834805658130216549}
+  childParticleSystem: {fileID: 0}
+  childParticleSystemRenderer: {fileID: 0}
+  particleSystemRenderer: {fileID: 0}
   targetObject: {fileID: 1631207336}
   audioId: -1
   spotlightVersion: 0

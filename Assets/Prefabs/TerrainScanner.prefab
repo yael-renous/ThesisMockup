@@ -9799,6 +9799,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   particleSystem: {fileID: 834805658714398530}
+  childParticleSystem: {fileID: 1190371502438210863}
+  childParticleSystemRenderer: {fileID: 2674264021635368326}
+  particleSystemRenderer: {fileID: 7010266117012821515}
   targetObject: {fileID: 0}
   audioId: 0
   spotlightVersion: 0

@@ -9,10 +9,10 @@ public class RoomObject : MonoBehaviour
    public Material[] ColoredObjectMaterials;
    public string name;
    public GameObject spotlight;
-   public float lightIntensity = 300f; // Added public parameter for light intensity
+   private float lightIntensity = 10f; // Added public parameter for light intensity
    private float audioStartTime = 0f; // To track when the audio started playing
    public float minPlayTimeInSeconds = 0.5f;
-   private AudioLowPassFilter lowPass;
+ 
 
    // Awake is called when the script instance is being loaded
    void Awake()
@@ -23,12 +23,7 @@ public class RoomObject : MonoBehaviour
        }
        audioSource.loop = false;
 
-       // Add or get the AudioLowPassFilter
-       lowPass = GetComponent<AudioLowPassFilter>();
-       if (lowPass == null)
-           lowPass = gameObject.AddComponent<AudioLowPassFilter>();
-       // Set default cutoff to max (no muffling)
-       lowPass.cutoffFrequency = 22000f;
+     
 
        ColoredObject.SetActive(false);
        spotlight.SetActive(false);
@@ -45,6 +40,7 @@ public class RoomObject : MonoBehaviour
         Invoke("hideColoredObject", 0.3f);
     }
    }
+
 
    public void hideColoredObject(){
     RealColoredObject.SetActive(true);

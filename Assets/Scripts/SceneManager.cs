@@ -69,7 +69,7 @@ public class SceneManager : MonoBehaviour
     {
         keyboard = Keyboard.current;
         AudioDetection.Instance.OnStartSpeaking += OnStartSpeaking;
-        // EnterStaticMode();
+        EnterStaticMode();
         lastEffectChangeTime = Time.time;
         lastBackgroundEffectChangeTime = Time.time;
         backgroundEffects[currentBackgroundEffectIndex].activate();
@@ -83,7 +83,7 @@ public class SceneManager : MonoBehaviour
     void Update()
     {
         HandleEffectChange();
-        // HandleStaticModeCheck();
+        HandleStaticModeCheck();
         HandleBackgroundEffectChange();
     }
     #endregion
@@ -113,7 +113,7 @@ public class SceneManager : MonoBehaviour
             }
             else
             {
-                PlayStaticBatScanners();
+                // PlayStaticBatScanners();
             }
             lastCheckTime = Time.time;
         }
@@ -134,6 +134,7 @@ public class SceneManager : MonoBehaviour
         // Reset bat scanner sequence
         batScannerPlayCount = 0;
         lastBatScannerTime = Time.time;
+        currentEffectIndex = 0;
     }
 
     public void PlayStaticBatScanners()
@@ -165,7 +166,6 @@ public class SceneManager : MonoBehaviour
     {
         staticMode = false;
         int audioId = nextAudioId++;
-        Debug.Log($"SceneManager: OnStartSpeaking: {audioId}");
         audioClips[audioId] = audioClip;
         roomEffects[currentEffectIndex].Activate(audioId);
     }
@@ -182,6 +182,19 @@ public class SceneManager : MonoBehaviour
         }
         return debugAudioClip; //TODO: remove this
     }
+
+    public AudioClip GetRandomAudioClip()
+    {
+        if(audioClips.Count == 0)
+        {
+            return null;
+        }
+        int randomIndex = Random.Range(0, audioClips.Count);
+        Debug.Log($"SceneManager: GetRandomAudioClip: {randomIndex}");
+        Debug.Log($"SceneManager: GetRandomAudioClip: {audioClips[randomIndex].name}");
+        return audioClips[randomIndex];
+    }
+
     #endregion
 
     #region Effect Management

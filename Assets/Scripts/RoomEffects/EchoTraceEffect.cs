@@ -23,6 +23,8 @@ public class EchoTraceEffect : RoomEffect
     public float offsetY = 0f;
     public float offsetZ = 0f;
 
+    public bool showObjectsHit = true;
+
   
     // public Material colorObjectMaterial;
 
@@ -31,7 +33,6 @@ public class EchoTraceEffect : RoomEffect
     private float randomSpeed = 0f;
     public override void Activate(int audioId)
     {
-        Debug.Log("EchoTraceEffect activated");
         Color uniqueColor = lineColors[audioId % lineColors.Length];
         randomSpeed = Random.Range(0.5f, 1.5f)*animationSpeed;
 
@@ -86,8 +87,9 @@ public class EchoTraceEffect : RoomEffect
                 yield return StartCoroutine(AnimateSegment(origin, hitPoint, segmentTime * randomSpeed, lr));
                 if (roomObject != null)
                 {
-                    // colorObjectMaterial.SetColor("_EmissionColor", uniqueColor);
+                    if(showObjectsHit){
                     roomObject.showColoredObject(uniqueColor);
+                    }
                     roomObject.play(audioId);
                 }
 

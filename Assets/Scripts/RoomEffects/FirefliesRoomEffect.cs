@@ -33,6 +33,7 @@ public class FirefliesRoomEffect : BackgroundEffect
     {    
         fireflies.SetActive(false);
         isActive = false;
+        audioSource.Stop();
     }
 
     void Update()

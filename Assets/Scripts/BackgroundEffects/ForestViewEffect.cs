@@ -5,6 +5,9 @@ public class ForestViewEffect : BackgroundEffect
 {
     public GameObject ForestView;
     public Camera[] cameras;
+
+public Light light;
+    public AudioSource audioSource;
     public Transform camerasParentTransform;    
 
     public Vector3 leftBound;
@@ -122,8 +125,12 @@ public class ForestViewEffect : BackgroundEffect
         isActive = true;
         for (int i = 0; i < cameras.Length; i++)
         {
-            cameras[i].farClipPlane = 1000;
+            cameras[i].farClipPlane = 500;
         }
+
+        float lightIntensity = Random.Range(0.2f, 8f);
+        light.intensity = lightIntensity;
+        light.color = new Color(Random.Range(0f, 1f), Random.Range(0f, 1f), Random.Range(0f, 1f));
 
         // Randomly choose between movement or rotation
         bool shouldMove = Random.value > 0.5f;
@@ -143,6 +150,25 @@ public class ForestViewEffect : BackgroundEffect
             rotationAxis = Random.Range(0, 3);
             camerasParentTransform.rotation = originalCameraParentRotation;
         }
+
+        PlayVoice();
+    }
+
+    public void PlayVoice()
+    {
+        // AudioClip audioClip = SceneManager.Instance.GetRandomAudioClip();
+        // AudioClip chirp = SceneManager.Instance.GetAudioClip(-10);
+        // audioSource.clip = chirp;
+        // //random pan be right or left
+        // int randomPan = Random.Range(0, 2);
+        // if(randomPan == 0){
+        //     audioSource.panStereo = -1f;
+        // }else{
+        //     audioSource.panStereo = 1f;
+        // }
+        // audioSource.Play();
+        // float voiceInterval = Random.Range(0f, 0.5f);
+        // Invoke("PlayVoice", voiceInterval);
     }
 
     public override void deactivate()
@@ -167,7 +193,7 @@ public class ForestViewEffect : BackgroundEffect
 
    public override float getDuration()
    {
-    return duration;
+    return Random.Range( 0.1f, 0.7f);
    }
    
 }

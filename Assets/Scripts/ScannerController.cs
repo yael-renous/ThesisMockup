@@ -4,6 +4,9 @@ using UnityEngine;
 public class ScannerController : MonoBehaviour
 {
     public ParticleSystem particleSystem;
+    public ParticleSystem childParticleSystem;
+    public ParticleSystemRenderer childParticleSystemRenderer;
+    public ParticleSystemRenderer particleSystemRenderer;
     public RoomObject targetObject;
     public int audioId;
 
@@ -33,7 +36,7 @@ public class ScannerController : MonoBehaviour
         // Debug.Log("ScannerController initialized successfully");
     }
 
-    public void init(RoomObject targetObject, int audioId, bool spotlightVersion, float speed)
+    public void init(RoomObject targetObject, int audioId, bool spotlightVersion, float speed, Material material)
     {
         this.targetObject = targetObject;
         this.audioId = audioId;
@@ -43,7 +46,11 @@ public class ScannerController : MonoBehaviour
         //random speed between 2 and 8 
         particleSystem.startLifetime = speed;
         //also update first child particle system
-        particleSystem.GetComponentInChildren<ParticleSystem>().startLifetime = speed;
+        childParticleSystem.startLifetime = speed;
+        if(material != null){
+            particleSystemRenderer.material = material;
+            childParticleSystemRenderer.material = material;
+        }
 
         trigger.AddCollider(targetObject.GetComponent<Collider>());
     }
