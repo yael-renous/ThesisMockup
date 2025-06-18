@@ -10328,16 +10328,16 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   roomEffects:
-  - {fileID: 567877481}
-  - {fileID: 1173648371}
   - {fileID: 965854014}
+  - {fileID: 1173648371}
+  - {fileID: 567877481}
   micTransform: {fileID: 1482719731}
   currentEffectIndex: 2
   effectChangeInterval: 2
   backgroundEffects:
-  - {fileID: 1979724803}
   - {fileID: 178660601}
   - {fileID: 761721908}
+  - {fileID: 1979724803}
   currentBackgroundEffectIndex: 0
   chirpAudioId: -10
   chirpAudioClip: {fileID: 8300000, guid: 4995a9ab7af59472693958b25d603a9b, type: 3}
@@ -14153,10 +14153,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   debugAudioClip: {fileID: 0}
-  numLasers: 15
+  numLasers: 10
   maxBounces: 5
   maxDistance: 100
-  lineWidth: 0.04
+  lineWidth: 0.03
   animationSpeed: 100
   lineLifetime: 0.04
   showFullLine: 0
