@@ -5355,6 +5355,8 @@ GameObject:
   - component: {fileID: 120856380}
   - component: {fileID: 120856381}
   - component: {fileID: 120856382}
+  - component: {fileID: 120856383}
+  - component: {fileID: 120856384}
   m_Layer: 0
   m_Name: Mapping Manager
   m_TagString: Untagged
@@ -5463,7 +5465,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   <KeepAlpha>k__BackingField: 0
   <Resources>k__BackingField: {fileID: 11400000, guid: 4f35cf6570beb4605a26cd2d71c4f8fc, type: 2}
-  _serverName: Tree Render Texture
+  _serverName: Left Tree
   _captureMethod: 2
   _sourceCamera: {fileID: 1265071635}
   _sourceTexture: {fileID: 8400000, guid: 23b30256903c340a5afa7a92becf7269, type: 2}
@@ -5481,7 +5483,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   <KeepAlpha>k__BackingField: 0
   <Resources>k__BackingField: {fileID: 11400000, guid: 4f35cf6570beb4605a26cd2d71c4f8fc, type: 2}
-  _serverName: BushRF
+  _serverName: Left Bush
   _captureMethod: 2
   _sourceCamera: {fileID: 0}
   _sourceTexture: {fileID: 8400000, guid: aeea34773a6b44a97be2acec277ea16c, type: 2}
@@ -5499,10 +5501,46 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   <KeepAlpha>k__BackingField: 0
   <Resources>k__BackingField: {fileID: 11400000, guid: 4f35cf6570beb4605a26cd2d71c4f8fc, type: 2}
-  _serverName: bush2
+  _serverName: Right Flowers
   _captureMethod: 2
   _sourceCamera: {fileID: 0}
   _sourceTexture: {fileID: 8400000, guid: 622fc586b3f244dbbb2e304fe33c038f, type: 2}
+--- !u!114 &120856383
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 120856374}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d59ae4f317f9b4f8b8d64f71768aaea6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  <KeepAlpha>k__BackingField: 0
+  <Resources>k__BackingField: {fileID: 11400000, guid: 4f35cf6570beb4605a26cd2d71c4f8fc, type: 2}
+  _serverName: ' Right Tree'
+  _captureMethod: 2
+  _sourceCamera: {fileID: 0}
+  _sourceTexture: {fileID: 8400000, guid: e37c7f28c3ba44026a551a385d69e848, type: 2}
+--- !u!114 &120856384
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 120856374}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d59ae4f317f9b4f8b8d64f71768aaea6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  <KeepAlpha>k__BackingField: 0
+  <Resources>k__BackingField: {fileID: 11400000, guid: 4f35cf6570beb4605a26cd2d71c4f8fc, type: 2}
+  _serverName: Middle Bush
+  _captureMethod: 2
+  _sourceCamera: {fileID: 0}
+  _sourceTexture: {fileID: 8400000, guid: 92233eaeb9dd1408e9beb5162778269e, type: 2}
 --- !u!1 &137906249
 GameObject:
   m_ObjectHideFlags: 0
@@ -10965,6 +11003,11 @@ Transform:
   m_Children: []
   m_Father: {fileID: 2133896428}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &226878311 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 5288558936781117557, guid: 3a751f9001e059c49a8734eeb6593f5b, type: 3}
+  m_PrefabInstance: {fileID: 758585892}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &231953574 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 4802942625574401804, guid: 1211f217308f6f74e9e98a3b1ad0d85f, type: 3}
@@ -12545,7 +12588,7 @@ Transform:
   m_GameObject: {fileID: 751010432}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.82, y: 0, z: 0.62}
+  m_LocalPosition: {x: -0.52, y: 0, z: 0.72}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -12567,7 +12610,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   audioSource: {fileID: 751010435}
-  ColoredObject: {fileID: 1964284610}
+  ColoredObject: {fileID: 226878311}
   RealColoredObject: {fileID: 1964284610}
   ColoredObjectMaterials:
   - {fileID: 2100000, guid: 823840b2f03fb41208e8a09e0ce87d9b, type: 2}
@@ -14119,7 +14162,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1176103692}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: 0, y: 0.41246855, z: 0, w: 0.9109719}
   m_LocalPosition: {x: 2.31, y: 0, z: 0.96}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -14128,7 +14171,7 @@ Transform:
   - {fileID: 1672378008}
   - {fileID: 1005541668}
   m_Father: {fileID: 1403230174}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 48.72, z: 0}
 --- !u!82 &1176103694
 AudioSource:
   m_ObjectHideFlags: 0
@@ -14269,7 +14312,7 @@ BoxCollider:
   m_Enabled: 1
   serializedVersion: 3
   m_Size: {x: 0.62014794, y: 2.2444677, z: 0.5083605}
-  m_Center: {x: 0.18992603, y: 0.62223375, z: 0.24581975}
+  m_Center: {x: 0.05, y: 0.62223375, z: -0.02}
 --- !u!1 &1214554433
 GameObject:
   m_ObjectHideFlags: 0
@@ -15825,8 +15868,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1631207333}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -2.48, y: 0, z: 1.35}
+  m_LocalRotation: {x: 0, y: 0.37395912, z: 0, w: 0.9274452}
+  m_LocalPosition: {x: -2.149, y: 0, z: 1.49}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -15834,7 +15877,7 @@ Transform:
   - {fileID: 1423066790}
   - {fileID: 1950755294}
   m_Father: {fileID: 1403230174}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 43.92, z: 0}
 --- !u!82 &1631207335
 AudioSource:
   m_ObjectHideFlags: 0
@@ -16021,6 +16064,10 @@ PrefabInstance:
       propertyPath: m_Layer
       value: 11
       objectReference: {fileID: 0}
+    - target: {fileID: 5062386328523309627, guid: 9769dc986c5dd6b4eb5fc38634c7d308, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 6253326094502923765, guid: 9769dc986c5dd6b4eb5fc38634c7d308, type: 3}
       propertyPath: m_Layer
       value: 11
@@ -16136,7 +16183,7 @@ Transform:
   m_GameObject: {fileID: 1680837273}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.11, y: 0, z: -0.92}
+  m_LocalPosition: {x: 0.361, y: 0, z: -0.725}
   m_LocalScale: {x: 0.5, y: 0.5, z: 0.5}
   m_ConstrainProportionsScale: 1
   m_Children:
@@ -16510,8 +16557,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1803496987}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 1.66, y: 0, z: -1.69}
+  m_LocalRotation: {x: 0, y: -0.2326816, z: 0, w: 0.972553}
+  m_LocalPosition: {x: 2.85, y: 0, z: -1.81}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -16519,7 +16566,7 @@ Transform:
   - {fileID: 619735077}
   - {fileID: 522932796}
   m_Father: {fileID: 1403230174}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: -26.91, z: 0}
 --- !u!82 &1803496990
 AudioSource:
   m_ObjectHideFlags: 0
@@ -16967,6 +17014,10 @@ PrefabInstance:
     - target: {fileID: 4747873755626539893, guid: 1211f217308f6f74e9e98a3b1ad0d85f, type: 3}
       propertyPath: m_Layer
       value: 9
+      objectReference: {fileID: 0}
+    - target: {fileID: 4747873755626539893, guid: 1211f217308f6f74e9e98a3b1ad0d85f, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4802942625574401804, guid: 1211f217308f6f74e9e98a3b1ad0d85f, type: 3}
       propertyPath: m_Name
