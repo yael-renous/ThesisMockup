@@ -16,6 +16,11 @@ public class SceneManager : MonoBehaviour
     [Tooltip("Time in minutes between effect changes")]
     public float effectChangeInterval = 5f;
 
+    [Header("Background Effects")]
+    public BackgroundEffect[] backgroundEffects;
+    public int currentBackgroundEffectIndex = 0;
+    // public float backgroundEffectChangeInterval = 10f;
+    
     [Header("Audio Settings")]
     public int chirpAudioId = -10;
     public AudioClip chirpAudioClip;
@@ -36,7 +41,7 @@ public class SceneManager : MonoBehaviour
     private int nextAudioId = 0;
     private Keyboard keyboard;
     private float lastEffectChangeTime = 0f;
-
+    private float lastBackgroundEffectChangeTime = 0f;
     // Static Mode Variables
     private float lastCheckTime = 0f;
     public float checkInterval = 2f; // Check every second
@@ -64,8 +69,10 @@ public class SceneManager : MonoBehaviour
     {
         keyboard = Keyboard.current;
         AudioDetection.Instance.OnStartSpeaking += OnStartSpeaking;
-        EnterStaticMode();
+        // EnterStaticMode();
         lastEffectChangeTime = Time.time;
+        lastBackgroundEffectChangeTime = Time.time;
+        backgroundEffects[currentBackgroundEffectIndex].activate();
     }
 
     private void OnDestroy()
@@ -76,7 +83,8 @@ public class SceneManager : MonoBehaviour
     void Update()
     {
         HandleEffectChange();
-        HandleStaticModeCheck();
+        // HandleStaticModeCheck();
+        HandleBackgroundEffectChange();
     }
     #endregion
 
@@ -191,12 +199,32 @@ public class SceneManager : MonoBehaviour
 
     private void ChangeEffect()
     {
-        currentEffectIndex++;
-        if (currentEffectIndex >= roomEffects.Length)
-        {
-            currentEffectIndex = 0;
-        }
+        currentEffectIndex = (currentEffectIndex + 1) % roomEffects.Length;
         Debug.Log($"SceneManager: Changed effect to index {currentEffectIndex}");
+    }
+
+    private void HandleBackgroundEffectChange()
+    {
+        float currentTime = Time.time;
+        float timeSinceLastChange = (currentTime - lastBackgroundEffectChangeTime) / 60f; // Convert to minutes
+
+        if (timeSinceLastChange >= backgroundEffects[currentBackgroundEffectIndex].getDuration())
+        {
+            ChangeBackgroundEffect();
+            lastBackgroundEffectChangeTime = currentTime;
+        }
+    }
+
+    private void ChangeBackgroundEffect()
+    {
+        backgroundEffects[currentBackgroundEffectIndex].deactivate();
+        currentBackgroundEffectIndex = (currentBackgroundEffectIndex + 1) % backgroundEffects.Length;
+        backgroundEffects[currentBackgroundEffectIndex].activate();
+
+        if (currentBackgroundEffectIndex >= backgroundEffects.Length)
+        {
+            currentBackgroundEffectIndex = 0;
+        }
     }
     #endregion
 }

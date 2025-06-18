@@ -1,0 +1,21 @@
+using UnityEngine;
+
+public class FireflyEffect : BackgroundEffect
+{
+
+    public float duration = 10f;
+
+    public override void activate()
+    {
+       
+    }
+
+    public override void deactivate()
+    {
+    }
+
+    public override float getDuration()
+    {
+        return duration;
+    }
+}

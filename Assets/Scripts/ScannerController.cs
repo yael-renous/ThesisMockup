@@ -30,7 +30,7 @@ public class ScannerController : MonoBehaviour
             return;
         }
 
-        Debug.Log("ScannerController initialized successfully");
+        // Debug.Log("ScannerController initialized successfully");
     }
 
     public void init(RoomObject targetObject, int audioId, bool spotlightVersion)
