@@ -33,13 +33,17 @@ public class ScannerController : MonoBehaviour
         // Debug.Log("ScannerController initialized successfully");
     }
 
-    public void init(RoomObject targetObject, int audioId, bool spotlightVersion)
+    public void init(RoomObject targetObject, int audioId, bool spotlightVersion, float speed)
     {
         this.targetObject = targetObject;
         this.audioId = audioId;
         this.spotlightVersion = spotlightVersion;
         // Configure particle system trigger
         var trigger = particleSystem.trigger;
+        //random speed between 2 and 8 
+        particleSystem.startLifetime = speed;
+        //also update first child particle system
+        particleSystem.GetComponentInChildren<ParticleSystem>().startLifetime = speed;
 
         trigger.AddCollider(targetObject.GetComponent<Collider>());
     }

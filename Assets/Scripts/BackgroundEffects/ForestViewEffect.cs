@@ -10,11 +10,7 @@ public class ForestViewEffect : BackgroundEffect
     public Vector3 leftBound;
     public Vector3 rightBound;
 
-    public float moveSpeed = 1f;
-    public float clipPlaneSpeed = 1f;
-
-    // public Transform cameraTransform;
-
+  
     private bool isActive = false;
     public GameObject roomCubeParent;
 
@@ -25,8 +21,6 @@ public class ForestViewEffect : BackgroundEffect
   
 
     public float duration = 5f;
-    public float transitionDuration = 1f; // Duration for the DOTween animations
-
     private bool isMoving = false;
     private bool isRotating = false;
     private int movementAxis = 0;
@@ -34,8 +28,6 @@ public class ForestViewEffect : BackgroundEffect
     private float movementSpeed = 2f;
     private float rotationSpeed = 30f;
     private bool isMovingForward = true;
-    private bool isRotatingForward = true;
-
     void Start()
     {
         originalCameraParentPosition = camerasParentTransform.position;

@@ -27,11 +27,14 @@ public class EchoTraceEffect : RoomEffect
     // public Material colorObjectMaterial;
 
     #endregion
-
+  
+    private float randomSpeed = 0f;
     public override void Activate(int audioId)
     {
         Debug.Log("EchoTraceEffect activated");
         Color uniqueColor = lineColors[audioId % lineColors.Length];
+        randomSpeed = Random.Range(0.5f, 1.5f)*animationSpeed;
+
         AnimateRaysInSphere(SceneManager.Instance.micTransform, audioId, uniqueColor);
     }
 
@@ -80,7 +83,7 @@ public class EchoTraceEffect : RoomEffect
                 float segmentDistance = Vector3.Distance(origin, hitPoint);
                 float segmentTime = segmentDistance / 343f;
 
-                yield return StartCoroutine(AnimateSegment(origin, hitPoint, segmentTime * animationSpeed, lr));
+                yield return StartCoroutine(AnimateSegment(origin, hitPoint, segmentTime * randomSpeed, lr));
                 if (roomObject != null)
                 {
                     // colorObjectMaterial.SetColor("_EmissionColor", uniqueColor);
@@ -98,7 +101,7 @@ public class EchoTraceEffect : RoomEffect
             {
                 float segmentDistance = maxDistance;
                 float segmentTime = segmentDistance / 343f;
-                yield return StartCoroutine(AnimateSegment(origin, origin, segmentTime * animationSpeed, lr));
+                yield return StartCoroutine(AnimateSegment(origin, origin, segmentTime * randomSpeed, lr));
                 totalDistance += segmentDistance;
                 break;
             }

@@ -30,13 +30,19 @@ public class ScanRoomEffect : RoomEffect
 
     private void CreateScanners()
     {
+        float randomSpeed = Random.Range(2f, 8f);
+        Material material = null;
+        if(materials.Length > 0){
+            material = materials[Random.Range(0, materials.Length)];
+        }
+        
         foreach (RoomObject roomObject in roomObjects)
         {
-            CreateScanner(roomObject);
+            CreateScanner(roomObject, randomSpeed, material);
         }
     }
 
-    private void CreateScanner(RoomObject targetObject)
+    private void CreateScanner(RoomObject targetObject, float randomSpeed, Material material)
     {
         GameObject scanner = Instantiate(scannerPrefab, SceneManager.Instance.micTransform.position, Quaternion.identity);
         scanner.name = "Scanner_" + targetObject.name;
@@ -48,7 +54,7 @@ public class ScanRoomEffect : RoomEffect
         ScannerController scannerController = scanner.GetComponent<ScannerController>();
         if (scannerController != null)
         {
-            scannerController.init(targetObject, 0, spotlightVersion); // We'll update the audioId when activating
+            scannerController.init(targetObject, 0, spotlightVersion, randomSpeed); // We'll update the audioId when activating
             
             // Store particle system reference
             ParticleSystem particleSystem = scanner.GetComponent<ParticleSystem>();
@@ -58,7 +64,7 @@ public class ScanRoomEffect : RoomEffect
             ParticleSystemRenderer particleRenderer = scanner.GetComponent<ParticleSystemRenderer>();
             //randomly select a material
             if(!spotlightVersion){
-                particleRenderer.material = materials[Random.Range(0, materials.Length)];
+                particleRenderer.material = material;
             }
             // Stop the particle system initially
             particleSystem.Stop();
