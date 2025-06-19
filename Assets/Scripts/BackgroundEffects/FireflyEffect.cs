@@ -3,7 +3,7 @@ using UnityEngine;
 public class FireflyEffect : BackgroundEffect
 {
 
-    public float duration = 10f;
+    // public float duration = 10f;
 
     public override void activate()
     {
@@ -16,6 +16,6 @@ public class FireflyEffect : BackgroundEffect
 
     public override float getDuration()
     {
-        return duration;
+        return Random.Range(0.8f, 1.4f);
     }
 }

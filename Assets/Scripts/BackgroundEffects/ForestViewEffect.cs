@@ -151,28 +151,32 @@ public Light light;
             camerasParentTransform.rotation = originalCameraParentRotation;
         }
 
+        // audioSource.Play();
+
         PlayVoice();
     }
 
     public void PlayVoice()
     {
-        // AudioClip audioClip = SceneManager.Instance.GetRandomAudioClip();
+        if(!isActive) return;
+        AudioClip clip = SceneManager.Instance.GetRandomAudioClip();
         // AudioClip chirp = SceneManager.Instance.GetAudioClip(-10);
-        // audioSource.clip = chirp;
-        // //random pan be right or left
-        // int randomPan = Random.Range(0, 2);
-        // if(randomPan == 0){
-        //     audioSource.panStereo = -1f;
-        // }else{
-        //     audioSource.panStereo = 1f;
-        // }
-        // audioSource.Play();
-        // float voiceInterval = Random.Range(0f, 0.5f);
-        // Invoke("PlayVoice", voiceInterval);
+        audioSource.clip = clip;
+        //random pan be right or left
+        int randomPan = Random.Range(0, 2);
+        if(randomPan == 0){
+            audioSource.panStereo = -1f;
+        }else{
+            audioSource.panStereo = 1f;
+        }
+        audioSource.Play();
+        float voiceInterval = Random.Range(0f, 0.5f);
+        Invoke("PlayVoice", voiceInterval);
     }
 
     public override void deactivate()
     {
+        isActive = false;
         //reset camera parent transform
         camerasParentTransform.position = originalCameraParentPosition;
         camerasParentTransform.rotation = originalCameraParentRotation;
@@ -181,7 +185,6 @@ public Light light;
         //turn on room cube parent
         roomCubeParent.SetActive(true);
         //turn off isActive
-        isActive = false;
         isMoving = false;
         isRotating = false;
         //reset camera far clip planes
@@ -189,6 +192,7 @@ public Light light;
         {
             cameras[i].farClipPlane = originalFarClipPlanes[i];
         }
+        audioSource.Stop();
     }
 
    public override float getDuration()

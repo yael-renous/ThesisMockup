@@ -212,6 +212,7 @@ public class SceneManager : MonoBehaviour
 
     private void ChangeEffect()
     {
+        effectChangeInterval = Random.Range(0.6f, 2f);
         currentEffectIndex = (currentEffectIndex + 1) % roomEffects.Length;
         Debug.Log($"SceneManager: Changed effect to index {currentEffectIndex}");
     }
