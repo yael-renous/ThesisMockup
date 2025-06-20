@@ -3,7 +3,7 @@ using UnityEngine;
 public class EmptyRoomEffect : BackgroundEffect
 {
     public GameObject roomCubeParent;
-    // public float duration = 10f;
+    public float duration = 10f;
         // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -26,6 +26,7 @@ public class EmptyRoomEffect : BackgroundEffect
 
     public override float getDuration()
     {
-        return Random.Range(0.8f, 1.2f);
+        return duration;
+        // return Random.Range(0.4f, 1.2f);
     }
 }

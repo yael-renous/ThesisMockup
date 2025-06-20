@@ -197,7 +197,8 @@ public Light light;
 
    public override float getDuration()
    {
-    return Random.Range( 0.1f, 0.7f);
+    return duration;
+    // return Random.Range( 0.4f, 1.7f);
    }
    
 }

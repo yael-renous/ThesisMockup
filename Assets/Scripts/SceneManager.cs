@@ -21,6 +21,14 @@ public class SceneManager : MonoBehaviour
     public int currentBackgroundEffectIndex = 0;
     // public float backgroundEffectChangeInterval = 10f;
     
+    [Header("Debug Controls")]
+    [Tooltip("Enable debug mode to manually control effects")]
+    public bool debugMode = false;
+    [Tooltip("Manual control of room effect index (only works in debug mode)")]
+    public int debugRoomEffectIndex = 0;
+    [Tooltip("Manual control of background effect index (only works in debug mode)")]
+    public int debugBackgroundEffectIndex = 0;
+    
     [Header("Audio Settings")]
     public int chirpAudioId = -10;
     public AudioClip chirpAudioClip;
@@ -82,9 +90,16 @@ public class SceneManager : MonoBehaviour
 
     void Update()
     {
-        HandleEffectChange();
-        HandleStaticModeCheck();
-        HandleBackgroundEffectChange();
+        if(debugMode)
+        {
+            HandleKeyboardInput();
+        }
+        else
+        {
+            HandleEffectChange();
+            HandleStaticModeCheck();
+            HandleBackgroundEffectChange();
+        }
     }
     #endregion
 
@@ -93,11 +108,40 @@ public class SceneManager : MonoBehaviour
     {
         if(keyboard.enterKey.wasPressedThisFrame)
         {
-            currentEffectIndex++;
-            if(currentEffectIndex >= roomEffects.Length)
-            {
-                currentEffectIndex = 0;
-            }
+     
+                // Apply debug indices from inspector
+                SetRoomEffect(debugRoomEffectIndex);
+                SetBackgroundEffect(debugBackgroundEffectIndex);
+        }
+    }
+
+    private void SetRoomEffect(int index)
+    {
+        if (index >= 0 && index < roomEffects.Length)
+        {
+            currentEffectIndex = index;
+            debugRoomEffectIndex = index;
+            Debug.Log($"SceneManager: Debug - Set room effect to index {index}");
+        }
+        else
+        {
+            Debug.LogWarning($"SceneManager: Debug - Invalid room effect index: {index}. Valid range: 0-{roomEffects.Length - 1}");
+        }
+    }
+
+    private void SetBackgroundEffect(int index)
+    {
+        if (index >= 0 && index < backgroundEffects.Length)
+        {
+            backgroundEffects[currentBackgroundEffectIndex].deactivate();
+            currentBackgroundEffectIndex = index;
+            debugBackgroundEffectIndex = index;
+            backgroundEffects[currentBackgroundEffectIndex].activate();
+            Debug.Log($"SceneManager: Debug - Set background effect to index {index}");
+        }
+        else
+        {
+            Debug.LogWarning($"SceneManager: Debug - Invalid background effect index: {index}. Valid range: 0-{backgroundEffects.Length - 1}");
         }
     }
     #endregion
@@ -200,6 +244,10 @@ public class SceneManager : MonoBehaviour
     #region Effect Management
     private void HandleEffectChange()
     {
+        // Skip automatic effect changes if debug mode is enabled
+        if (debugMode)
+            return;
+
         float currentTime = Time.time;
         float timeSinceLastChange = (currentTime - lastEffectChangeTime) / 60f; // Convert to minutes
 
@@ -219,6 +267,10 @@ public class SceneManager : MonoBehaviour
 
     private void HandleBackgroundEffectChange()
     {
+        // Skip automatic background effect changes if debug mode is enabled
+        if (debugMode)
+            return;
+
         float currentTime = Time.time;
         float timeSinceLastChange = (currentTime - lastBackgroundEffectChangeTime) / 60f; // Convert to minutes
 
